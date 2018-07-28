@@ -7,10 +7,9 @@ import BaseLayoutEditorView from './base/BaseLayoutEditorView';
 import FakeInputModel from './impl/datalist/models/FakeInputModel';
 import ButtonView from './impl/datalist/views/ButtonView';
 import PanelView from './impl/datalist/views/PanelView';
-import ReferenceListItemView from './impl/reference/views/ReferenceListItemView';
+import ReferenceListItemView from './impl/datalist/views/ReferenceListItemView';
 import formRepository from '../formRepository';
-import DefaultReferenceModel from './impl/reference/models/DefaultReferenceModel';
-import StaticController from './impl/datalist/controllers/StaticController';
+import Ajax from '../../services/AjaxService';
 
 type DataValue = {
     id: string,
@@ -18,10 +17,6 @@ type DataValue = {
 };
 
 type DatalistValue = Array<DataValue>;
-
-const ReferenceCollection = Backbone.Collection.extend({
-    model: DefaultReferenceModel
-});
 
 const defaultOptions = {
     displayAttribute: 'name',
@@ -37,7 +32,13 @@ const defaultOptions = {
     canDeleteItem: true,
     valueType: 'normal',
     showSearch: true,
+<<<<<<< HEAD
     class: undefined
+=======
+    queryOptions: {},
+    createValueUrl() {},
+    edit() {}
+>>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
 };
 
 /**
@@ -46,8 +47,6 @@ const defaultOptions = {
  * @class Editor to select object in the format <code>{ id, text }</code>, using async fetch for 'options collection'.
  * @extends module:core.form.editors.base.BaseEditorView
  * @param {Object} options Options object. All the properties of {@link module:core.form.editors.base.BaseEditorView BaseEditorView} class are also supported.
- * @param {BaseReferenceEditorController} [options.controller=null] Data provider, instance
- * {@link module:core.form.editors.reference.controllers.BaseReferenceEditorController BaseReferenceEditorController}.
  * @param {Boolean} [options.showAddNewButton=false] responsible for displaying button, which providing to user adding new elements.
  * @param {Marionette.View} [options.buttonView=ReferenceButtonView] view to display button (what we click on to show dropdown).
  * @param {Marionette.View} [options.listView=ReferenceListView] view to display item in the dropdown list.
@@ -69,17 +68,20 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
                 this.listenTo(options.collection, 'reset', panelCollection => this.__onResetCollection(panelCollection));
             }
         }
-        this.panelCollection = new VirtualCollection(new ReferenceCollection(collection), {
+        this.panelCollection = new VirtualCollection(collection, {
             isSliding: true,
             selectableBehavior: 'multi'
         });
 
+<<<<<<< HEAD
         this.controller =
             this.options.controller ||
             new StaticController({
                 collection: options.collection
             });
 
+=======
+>>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
         this.value = this.__adjustValue(this.value);
         this.__updateWithDelay = _.debounce(this.__updateFilter, this.options.textFilterDelay);
         this.listenTo(this.panelCollection, 'selected', this.__onValueSet);
@@ -119,7 +121,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
                 getDisplayText: value => this.__getDisplayText(value, this.options.displayAttribute),
                 showEditButton: this.options.showEditButton,
                 canDeleteItem: this.options.canDeleteItem,
-                createValueUrl: this.controller.createValueUrl.bind(this.controller),
+                createValueUrl: this.options.createValueUrl,
                 enabled: this.getEnabled(),
                 readonly: this.getReadonly()
             },
@@ -345,7 +347,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
     },
 
     __onValueEdit(value) {
-        return this.controller.edit(value);
+        return this.options.edit(value);
     },
 
     __onInputSearch(value, immediate: boolean): void {
@@ -355,7 +357,11 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
     async __onFilterText() {
         this.dropdownView.buttonView.setLoading(true);
 
+<<<<<<< HEAD
         return this.controller.fetch({ text: this.searchText }).then(data => {
+=======
+        return Ajax.getResponse('GET', this.options.url, Object.assign(this.options.queryOptions, { text: this.searchText })).then(data => {
+>>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
             this.panelCollection.reset(data.collection);
             this.panelCollection.totalCount = data.totalCount;
 
@@ -375,7 +381,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
 
     __onAddNewItem(): void {
         this.dropdownView.close();
-        this.controller.addNewItem(createdValue => {
+        this.options.addNewItem(createdValue => {
             if (createdValue) {
                 this.__value(createdValue, true);
             }

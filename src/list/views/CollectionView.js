@@ -196,7 +196,8 @@ export default Marionette.CompositeView.extend({
         let delta;
         const handle = (!this.getOption('isEditable') || e.ctrlKey) && this.collection.isSliding;
         const eventResult = !handle && e.target.tagName === 'INPUT';
-        const selectedModels = this.collection.selected instanceof Backbone.Model ? [this.collection.selected] : Object.values(this.collection.selected || {});
+        const selectedModels: Array<any> = this.collection.selected instanceof Backbone.Model ? [this.collection.selected] : Object.values(this.collection.selected || {});
+
         e.stopPropagation();
         switch (e.keyCode) {
             case keyCode.UP:
