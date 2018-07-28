@@ -29,7 +29,6 @@ import autosize from 'autosize';
 import codemirror_ from 'codemirror/lib/codemirror';
 import 'innersvg-polyfill';
 import jsencrypt from 'jsencrypt';
-import * as jqui from 'jquery-ui';
 
 window._ = underscoreLib;
 window._.mixin(mixin);
@@ -39,7 +38,6 @@ $_.browser = {
 };
 
 const api = {
-    'jquery-ui': jqui,
     moment: moment_,
     Handlebars: Handlebars_,
     $: $_,
