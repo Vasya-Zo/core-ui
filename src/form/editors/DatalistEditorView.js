@@ -32,13 +32,10 @@ const defaultOptions = {
     canDeleteItem: true,
     valueType: 'normal',
     showSearch: true,
-<<<<<<< HEAD
-    class: undefined
-=======
+    class: undefined,
     queryOptions: {},
     createValueUrl() {},
     edit() {}
->>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
 };
 
 /**
@@ -73,15 +70,6 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
             selectableBehavior: 'multi'
         });
 
-<<<<<<< HEAD
-        this.controller =
-            this.options.controller ||
-            new StaticController({
-                collection: options.collection
-            });
-
-=======
->>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
         this.value = this.__adjustValue(this.value);
         this.__updateWithDelay = _.debounce(this.__updateFilter, this.options.textFilterDelay);
         this.listenTo(this.panelCollection, 'selected', this.__onValueSet);
@@ -357,11 +345,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
     async __onFilterText() {
         this.dropdownView.buttonView.setLoading(true);
 
-<<<<<<< HEAD
-        return this.controller.fetch({ text: this.searchText }).then(data => {
-=======
         return Ajax.getResponse('GET', this.options.url, Object.assign(this.options.queryOptions, { text: this.searchText })).then(data => {
->>>>>>> 7c0dd24c1fcb2c6a95495bae532e4425dfc44e31
             this.panelCollection.reset(data.collection);
             this.panelCollection.totalCount = data.totalCount;
 

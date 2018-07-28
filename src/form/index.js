@@ -36,7 +36,6 @@ import DemoAvatarEditorController from './editors/impl/avatar/controllers/DemoAv
 import DemoReferenceEditorController from './editors/impl/reference/controllers/DemoReferenceEditorController';
 import BaseReferenceEditorController from './editors/impl/reference/controllers/BaseReferenceEditorController';
 import DefaultReferenceModel from './editors/impl/reference/models/DefaultReferenceModel';
-import LoadingView from './editors/impl/reference/views/LoadingView';
 import DatalistButtonView from './editors/impl/datalist/views/ButtonView';
 import ColorPickerEditor from './editors/ColorPickerEditor';
 import RangeEditor from './editors/RangeEditor';
@@ -121,7 +120,6 @@ const api = /** @lends module:core.form */ {
                 DefaultReferenceModel
             },
             views: {
-                LoadingView,
                 DatalistButtonView
             }
         },
