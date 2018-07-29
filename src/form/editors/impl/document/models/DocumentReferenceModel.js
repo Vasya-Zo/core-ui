@@ -1,7 +1,5 @@
 //@flow
-import DefaultReferenceModel from '../../reference/models/DefaultReferenceModel';
-
-export default DefaultReferenceModel.extend({
+export default Backbone.Model.extend({
     defaults: {
         id: '',
         name: ''

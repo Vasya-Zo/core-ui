@@ -199,11 +199,11 @@ export default class {
         }
 
         return callParams;
-    },
+    }
 
     __onModuleReady() {
         if (this.componentQuery) {
             PresenterService.presentComponentSequence(this.componentQuery);
         }
     }
-};
+}

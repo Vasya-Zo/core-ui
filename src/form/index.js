@@ -33,9 +33,6 @@ import editorsImplCommonMemberModel from './editors/impl/members/models/MemberMo
 import IconEditorView from './editors/IconEditorView';
 import BaseAvatarEditorController from './editors/impl/avatar/controllers/BaseAvatarEditorController';
 import DemoAvatarEditorController from './editors/impl/avatar/controllers/DemoAvatarEditorController';
-import DemoReferenceEditorController from './editors/impl/reference/controllers/DemoReferenceEditorController';
-import BaseReferenceEditorController from './editors/impl/reference/controllers/BaseReferenceEditorController';
-import DefaultReferenceModel from './editors/impl/reference/models/DefaultReferenceModel';
 import DatalistButtonView from './editors/impl/datalist/views/ButtonView';
 import ColorPickerEditor from './editors/ColorPickerEditor';
 import RangeEditor from './editors/RangeEditor';
@@ -108,17 +105,6 @@ const api = /** @lends module:core.form */ {
          * @namespace
          * */
         reference: {
-            /**
-             * Base implementation of data providers for ReferenceEditorView.
-             * @namespace
-             * */
-            controllers: {
-                DemoReferenceEditorController,
-                BaseReferenceEditorController
-            },
-            models: {
-                DefaultReferenceModel
-            },
             views: {
                 DatalistButtonView
             }
