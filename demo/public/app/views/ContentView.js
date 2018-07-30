@@ -12,7 +12,7 @@ export default Marionette.View.extend({
 
     templateContext() {
         return {
-            description: markdown.toHTML(this.model.get('description') || '')
+            description: this.model.get('description')
         };
     },
 
