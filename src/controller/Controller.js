@@ -12,7 +12,7 @@ export default class {
         this.view = new this.contentView(contentViewOptions);
         this.moduleRegion = this.view.getRegion('moduleRegion');
         options.region.show(this.view); // <- this can be moved out to routing services after we get rid of old modules
-        Marionette.Object.prototype.constructor.apply(this, arguments);
+
         CTEventsService.on('cbEvent', this.__handleEvent);
         if (WebSocketService.isConnected()) {
             WebSocketService.on('ws:open ws:close ws:message ws:error', this.__handleSocketEvent);
@@ -20,7 +20,7 @@ export default class {
         this.moduleId = options.config.id;
     }
 
-    leave(isCalledByUnloadEvent) {
+    leave(isCalledByUnloadEvent: Boolean) {
         if (_.isFunction(this.onLeave)) {
             const moduleLeaveHandler = this.onLeave();
 
@@ -38,14 +38,14 @@ export default class {
         return true;
     }
 
-    setLoading(isLoading) {
+    setLoading(isLoading: Boolean) {
         this.view.setModuleLoading(isLoading);
         if (isLoading === false) {
             this.__onModuleReady();
         }
     }
 
-    triggerEvent(eventId, data) {
+    triggerEvent(eventId: String, data) {
         CTEventsService.triggerStorageEvent(eventId, data);
     }
 

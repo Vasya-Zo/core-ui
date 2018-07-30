@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
     // Step 1. Create model
     const model = new Backbone.Model({
         boolean: true,
@@ -67,7 +67,7 @@ export default function() {
             title: 'Datalist',
             validators: ['required'],
             required: true, // to display the asterisk left from title
-            controller: new core.form.editors.reference.controllers.DemoReferenceEditorController()
+            url: 'DemoController/GetInfo'
         },
         textArea: {
             type: 'TextArea',

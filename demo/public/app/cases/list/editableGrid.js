@@ -81,7 +81,7 @@ export default () => {
             type: 'Datalist',
             dataType: 'Instance',
             title: 'Reference Cell',
-            controller: new core.form.editors.reference.controllers.DemoReferenceEditorController(),
+            url: 'DemoController/GetInfo',
             editable: true,
             autocommit: true,
             getReadonly: model => model.get('numberCell') % 2,

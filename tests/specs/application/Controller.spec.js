@@ -4,39 +4,43 @@ import 'jasmine-jquery';
 describe('Application', () => {
     describe('Controller', () => {
         it('should initialize', () => {
-            const view = core.Controller.extend({
-                routingActions: {
-                    list: {
-                        url: 'SolutionConfigurationApi/List',
-                        viewModel: Backbone.Collection,
-                        view: Marionette.View.extend({ template: false }),
-                        viewEvents: {}
-                    },
-                    rolesList: {
-                        url: 'RolesCollectionApi/List',
-                        viewModel: Backbone.Collection,
-                        view: Marionette.View.extend({ template: false }),
-                        viewEvents: {
-                            'dblclick:row'(roleId) { },
-                            navigateToNewRole() { }
-                        }
-                    }
-                },
+            const view = class extends core.Controller {
+                constructor(options) {
+                    super(options);
 
-                requests: {
-                    'create:app': {
-                        url: 'SolutionConfigurationApi/Post',
-                        onSuccess() { }
-                    },
-                    'get:app': {
-                        url: 'SolutionConfigurationApi/Get'
-                    },
-                    'edit:app': {
-                        url: 'SolutionConfigurationApi/Put',
-                        onSuccess() { }
-                    }
+                    this.routingActions = {
+                        list: {
+                            url: 'SolutionConfigurationApi/List',
+                            viewModel: Backbone.Collection,
+                            view: Marionette.View.extend({ template: false }),
+                            viewEvents: {}
+                        },
+                        rolesList: {
+                            url: 'RolesCollectionApi/List',
+                            viewModel: Backbone.Collection,
+                            view: Marionette.View.extend({ template: false }),
+                            viewEvents: {
+                                'dblclick:row'(roleId) { },
+                                navigateToNewRole() { }
+                            }
+                        }
+                    };
+
+                    this.requests = {
+                        'create:app': {
+                            url: 'SolutionConfigurationApi/Post',
+                            onSuccess() { }
+                        },
+                        'get:app': {
+                            url: 'SolutionConfigurationApi/Get'
+                        },
+                        'edit:app': {
+                            url: 'SolutionConfigurationApi/Put',
+                            onSuccess() { }
+                        }
+                    };
                 }
-            });
+            };
 
             const controller = new view({
                 config: { id: 'my:module' },
@@ -51,10 +55,10 @@ describe('Application', () => {
         it('should call onRoute method and a correct navigation method', done => {
             const onChangeCallback = jasmine.createSpy('onChangeCallback');
 
-            const view = core.Controller.extend({
+            const view = class extends core.Controller {
                 onRoute() {
                     onChangeCallback();
-                },
+                }
 
                 navigationRoute(id) {
                     onChangeCallback();
@@ -62,7 +66,7 @@ describe('Application', () => {
                     expect(onChangeCallback).toHaveBeenCalledTimes(2);
                     done();
                 }
-            });
+            };
 
             const config = {
                 id: 'my:module',

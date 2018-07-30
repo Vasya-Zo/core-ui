@@ -2,7 +2,7 @@
 
 import CanvasView from 'demoPage/views/CanvasView';
 
-export default function() {
+export default function () {
     const model = new Backbone.Model({
         DatalistValue: [{
             id: 'task.1',
@@ -19,7 +19,7 @@ export default function() {
             showAddNewButton: true,
             showCheckboxes: true,
             maxQuantitySelected: 5,
-            controller: new core.form.editors.reference.controllers.DemoReferenceEditorController()
+            url: 'demoController/GetInfo'
         }),
         presentation: "[ {{#each DatalistValue}}{ id: '{{this.id}}', text: '{{this.text}}' }{{#unless @last}}, {{/unless}}{{/each}} ]",
         isEditor: true
