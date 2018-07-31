@@ -19,7 +19,7 @@ export default function () {
             showAddNewButton: true,
             showCheckboxes: true,
             maxQuantitySelected: 5,
-            url: 'demoController/GetInfo'
+            url: 'DemoController/GetInfo'
         }),
         presentation: "[ {{#each DatalistValue}}{ id: '{{this.id}}', text: '{{this.text}}' }{{#unless @last}}, {{/unless}}{{/each}} ]",
         isEditor: true
