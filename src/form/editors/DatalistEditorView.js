@@ -34,8 +34,8 @@ const defaultOptions = {
     showSearch: true,
     class: undefined,
     queryOptions: {},
-    createValueUrl() {},
-    edit() {}
+    createValueUrl() { },
+    edit() { }
 };
 
 /**
@@ -77,13 +77,10 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
 
         this.viewModel = {
             button: {
-                selected: new Backbone.Collection(this.value, {
+                selected: new Backbone.Collection(this.value, { //todo remove extra collection
                     comparator: helpers.comparatorFor(comparators.stringComparator2Asc, 'text')
                 })
-            },
-            panel: new Backbone.Model({
-                collection: this.panelCollection
-            })
+            }
         };
 
         const reqres = Backbone.Radio.channel(_.uniqueId('datalistE'));
@@ -115,7 +112,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
             },
             panelView: PanelView,
             panelViewOptions: {
-                model: this.viewModel.panel,
+                collection: this.panelCollection,
                 reqres,
                 showAddNewButton: this.options.showAddNewButton,
                 showCheckboxes: this.options.showCheckboxes,
@@ -255,7 +252,6 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
 
     __value(value: DataValue, triggerChange: boolean): void {
         if (JSON.stringify(this.value) === JSON.stringify(value) || (_.isObject(value) && this.value.find(v => v.id === value.id))) {
-            this.viewModel.panel.set('value', this.value);
             return;
         }
         const adjustedValue = this.__adjustValue(value);
@@ -272,7 +268,6 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
         }
 
         selectedModels.add(this.value, { at: selectedModels.length - 1 });
-        this.viewModel.panel.set('value', this.value);
 
         if (triggerChange) {
             this.__triggerChange();
@@ -430,7 +425,7 @@ export default (formRepository.editors.Datalist = BaseLayoutEditorView.extend({
             selected.splice(removingModelIndex, 1);
         }
         this.value = selected;
-        this.viewModel.panel.set('value', this.value);
+
         this.__triggerChange();
 
         this.__updateFakeInputModel();
