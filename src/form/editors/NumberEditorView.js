@@ -49,11 +49,15 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
     initialize(options) {
         if (options.format) {
+            this.thousandsSeparator = Core.services.LocalizationService.thousandsSeparatorSymbol;
+            this.decimalSymbol = Core.services.LocalizationService.decimalSymbol;
             this.numberMask = createNumberMask({
                 prefix: '',
-                thousandsSeparatorSymbol: Core.services.LocalizationService.thousandsSeparatorSymbol,
-                decimalSymbol: Core.services.LocalizationService.decimalSymbol,
-                allowDecimal: options.allowFloat
+                thousandsSeparatorSymbol: this.thousandsSeparator,
+                decimalSymbol: this.decimalSymbol,
+                allowDecimal: options.allowFloat,
+                requireDecimal: options.allowFloat,
+                allowNegative: true
             });
         }
     },
@@ -63,20 +67,10 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
     events: {
         'click .js-clear-button': '__clear',
-        'keydown @ui.input': '__keydown',
-        'keypress @ui.input': '__keypress',
+        'keyup @ui.input': '__keyup',
+        'change @ui.input': '__onChange',
         mouseenter: '__onMouseenter',
-        mouseleave: '__onMouseleave',
-        'keyup @ui.input'() {
-            if (this.options.changeMode === changeMode.keydown) {
-                this.__value(this.ui.input.val(), true, true, false);
-            } else {
-                this.__value(this.ui.input.val(), true, false, false);
-            }
-        },
-        'change @ui.input'() {
-            this.__value(this.ui.input.val(), false, true, false);
-        }
+        mouseleave: '__onMouseleave'
     },
 
     onRender() {
@@ -95,6 +89,42 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
     onDestroy() {
         this.maskedInputController && this.maskedInputController.destroy();
+    },
+
+    __keyup() {
+        const value = this.ui.input.val();
+        if (value === `-${this.decimalSymbol}`) {
+            return;
+        }
+        if (this.options.changeMode === changeMode.keydown) {
+            this.__value(value, true, true, false);
+        } else {
+            this.__value(value, true, false, false);
+        }
+    },
+
+    __onChange() {
+        const input = this.ui.input;
+        const max = input[0].getAttribute('max');
+        const min = input[0].getAttribute('min');
+        const value = this.__checkMaxMinValue(input.val(), max, min);
+        this.__value(value, false, true, false);
+        if (this.options.format) {
+            this.maskedInputController && this.maskedInputController.textMaskInputElement.update(value);
+        } else {
+            this.ui.input.val(value);
+        }
+    },
+
+    __checkMaxMinValue(value, max, min) {
+        let val = this.__parseToNumber(value);
+        if (max) {
+            val = val > Number(max) ? max : val;
+        }
+        if (min) {
+            val = val < Number(min) ? min : val;
+        }
+        return this.__parseToString(val);
     },
 
     setValue(value) {
@@ -130,15 +160,16 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
     __value(newValue, suppressRender, triggerChange, force) {
         let value = newValue;
-        if (value === this.value && !force) {
+        if ((value === this.value && !force) || value === '-') {
             return;
         }
+
         let parsed;
         if (value !== '' && value !== null) {
             parsed = this.__parse(value);
             if (parsed !== null) {
                 if (!this.options.allowFloat) {
-                    value = Math.floor(parsed);
+                    value = Math.round(parsed);
                 } else {
                     value = parsed;
                 }
@@ -167,7 +198,7 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
         let val = value;
 
         if (typeof val === 'string' && val !== '') {
-            val = this.__parseNumber(val);
+            val = this.__parseToNumber(val);
             if (val === Number.POSITIVE_INFINITY) {
                 val = Number.MAX_VALUE;
             } else if (val === Number.NEGATIVE_INFINITY) {
@@ -192,12 +223,15 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
         this.ui.input[0].setAttribute('step', this.options.step);
     },
 
-    __parseNumber(value) {
-        const thousandsSeparator = Core.services.LocalizationService.thousandsSeparatorSymbol;
-        const decimalSymbol = Core.services.LocalizationService.decimalSymbol;
-        let newValue = value.replace(`/\\${thousandsSeparator}/g`, '');
-        newValue = newValue.replace(`/\\${decimalSymbol}/g`, '.');
+    __parseToNumber(string) {
+        let newValue = string.replace(new RegExp(`\\${this.thousandsSeparator}`, 'g'), '');
+        newValue = newValue.replace(new RegExp(`\\${this.decimalSymbol}`, 'g'), '.');
+        newValue = newValue.replace(/[^\d\.-]*/g, '');
 
-        return parseFloat(newValue.replace(/[^\d\.]*/g, ''));
+        return parseFloat(newValue);
+    },
+
+    __parseToString(number) {
+        return String(number).replace(new RegExp('\\.', 'g'), this.decimalSymbol);     
     }
 }));

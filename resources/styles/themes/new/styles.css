@@ -116,6 +116,7 @@
   border: var(--border);
   border-radius: var(--border-radius);
 }
+
 .dropdown__wrp.dropdown__wrp_down {
   margin-top: -1px;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -256,7 +257,7 @@ svg.svg-grid-icons.svg-icons_flag-none {
     height: 100%;
 }
 
-.cell .editor {
+.cell > .editor {
   position: absolute;
   top: 0;
   left: 0;
