@@ -1,6 +1,5 @@
 import EmptyListView from './views/EmptyListView';
 import EmptyGridView from './views/EmptyGridView';
-import GridColumnHeaderView from './views/GridColumnHeaderView';
 import GridHeaderView from './views/GridHeaderView';
 import GridView from './views/GridView';
 import ListView from './views/CollectionView';
@@ -38,7 +37,6 @@ export default {
     views: {
         EmptyListView,
         EmptyGridView,
-        GridColumnHeaderView,
         GridHeaderView,
         GridView,
         ListView,

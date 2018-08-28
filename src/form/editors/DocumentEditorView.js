@@ -71,7 +71,7 @@ export default (formRepository.editors.Document = BaseCompositeEditorView.extend
     },
 
     checkEmpty() {
-        this.$el.toggleClass('pr-empty', this.collection && this.collection.length === 0);
+        this.el.classList.toggle('pr-empty', this.collection && this.collection.length === 0);
     },
 
     canAdd: false,
@@ -167,7 +167,7 @@ export default (formRepository.editors.Document = BaseCompositeEditorView.extend
 
     renderUploadButton(isReadonly) {
         if (isReadonly) {
-            this.ui.addRegion.hide();
+            this.ui.addRegion.setAttribute('displayNone', true);
         }
     },
 
@@ -382,7 +382,7 @@ export default (formRepository.editors.Document = BaseCompositeEditorView.extend
                 reqres: this.reqres
             }
         });
-        this.$selectButtonEl.html(this.dropdownView.render().$el);
+        this.$selectButtonEl.html(this.dropdownView.render().el);
     },
 
     showDropDown() {
@@ -438,10 +438,10 @@ export default (formRepository.editors.Document = BaseCompositeEditorView.extend
             return;
         }
         if (!this.getChildViewContainer(this) || !this.getChildViewContainer(this).children() || !this.getChildViewContainer(this).children().length) {
-            this.ui.showMore.hide();
+            this.ui.showMore.setAttribute('displayNone', true);
             return;
         }
-        const affordabletWidth = this.$el.width();
+        const affordabletWidth = this.el.offsetWidth;
         const childViews = this.getChildViewContainer(this).children();
         let visibleCounter = 1;
         let visibleWidth = /*60 +*/ childViews[0].offsetWidth;
@@ -456,18 +456,18 @@ export default (formRepository.editors.Document = BaseCompositeEditorView.extend
             childViews[i].style.display = 'none';
         }
         if (length - visibleCounter > 0) {
-            this.ui.showMore.show();
+            this.ui.showMore.removeAttribute('displayNone');;
             this.ui.invisibleCount.html(length - visibleCounter);
             this.ui.showMoreText.html(`${LocalizationService.get('CORE.FORM.EDITORS.DOCUMENT.SHOWMORE')} `);
         } else {
-            this.ui.showMore.hide();
+            this.ui.showMore.setAttribute('displayNone', true);
         }
     },
 
     expandShowMore() {
         this.getChildViewContainer(this)
             .children()
-            .show();
+            .removeAttribute('displayNone');;
         this.ui.showMoreText.html(LocalizationService.get('CORE.FORM.EDITORS.DOCUMENT.HIDE'));
         this.ui.invisibleCount.html('');
     },

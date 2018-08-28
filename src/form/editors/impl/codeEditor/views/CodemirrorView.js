@@ -111,7 +111,7 @@ export default Marionette.View.extend({
             });
             this.showChildView('editorOutputContainer', this.output);
         }
-        this.ui.editor.css('height', this.options.height);
+        this.ui.editor.style.height = this.options.height;
         this.hintIsShown = false;
 
         const extraKeys = {
@@ -227,7 +227,7 @@ export default Marionette.View.extend({
     },
 
     __checkVisibleAndRefresh() {
-        if (this.$el.height()) {
+        if (this.el.offsetHeight) {
             this.codemirror.refresh();
             if (this.refreshTimerId) {
                 clearTimeout(this.refreshTimerId);
@@ -238,8 +238,8 @@ export default Marionette.View.extend({
     },
 
     __onMaximize() {
-        this.$el.addClass(classes.maximized);
-        this.ui.editor.css('height', '80%');
+        this.el.classList.add(classes.maximized);
+        this.ui.editor.style.height = '80%';
         $(this.regions.editorOutputContainer).css('height', '30%');
         $(this.regions.output).css('height', '100%');
         $(this.regions.outputTabs).css('height', '100%');
@@ -251,8 +251,8 @@ export default Marionette.View.extend({
 
     __onMinimize() {
         this.trigger('minimize', this);
-        this.$el.removeClass(classes.maximized);
-        this.ui.editor.css('height', this.options.height);
+        this.el.classList.remove(classes.maximized);
+        this.ui.editor.style.height = this.options.height;
         this.codemirror.refresh();
         this.isMaximized = false;
         this.__change();
@@ -602,10 +602,10 @@ export default Marionette.View.extend({
         this.showChildView('tooltipContainer', this.tooltip);
 
         const tooltipMargin = 10;
-        const hintPanel = $(hintEl).parent();
+        const hintPanel = $(hintEl).parentElement;
         const hintPanelPosition = hintPanel.position();
         const hintPanelWidth = hintPanel.width();
-        const tooltipWidth = this.tooltip.$el.width();
+        const tooltipWidth = this.tooltip.el.offsetWidth;
 
         let left = hintPanelPosition.left + hintPanelWidth + tooltipMargin;
         if (left + tooltipWidth > window.innerWidth) {
@@ -664,8 +664,8 @@ export default Marionette.View.extend({
             this.tooltipContainer.show(this.tooltip);
             const documentWidth = document.body.offsetWidth;
             const documentHeight = document.body.offsetHeight;
-            const tooltipWidth = this.tooltip.$el.width();
-            const tooltipHeightWithPadding = this.tooltip.$el.height() + TOOLTIP_PADDING_PX;
+            const tooltipWidth = this.tooltip.el.offsetWidth;
+            const tooltipHeightWithPadding = this.tooltip.el.offsetHeight + TOOLTIP_PADDING_PX;
             const x = e.pageX + tooltipWidth > documentWidth ? documentWidth - tooltipWidth : e.pageX;
             const y = e.pageY + tooltipHeightWithPadding > documentHeight ? e.pageY - tooltipHeightWithPadding : e.pageY + TOOLTIP_PADDING_PX;
             this.tooltip.setPosition({ top: y, left: x });
@@ -689,11 +689,11 @@ export default Marionette.View.extend({
 
     __highlightItem(el) {
         if (this.highlightedItem) {
-            this.highlightedItem.removeClass(classes.highlighted);
+            this.highlightedItem.classList.remove(classes.highlighted);
         }
         if (el) {
             this.highlightedItem = el;
-            this.highlightedItem.addClass(classes.highlighted);
+            this.highlightedItem.classList.add(classes.highlighted);
         }
     },
 

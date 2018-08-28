@@ -57,8 +57,8 @@ export default Marionette.CompositeView.extend({
     onRender() {
         const iconsProperty = this.options.iconsProperty;
         const itemSuffix = this.model.get(iconsProperty || 'fieldType').toLowerCase();
-        this.$el.addClass(paletteItemClassNameSuffix + itemSuffix);
-        this.$el.addClass(this.classes.static);
+        this.el.classList.add(paletteItemClassNameSuffix + itemSuffix);
+        this.el.classList.add(this.classes.static);
         this.__updateChildren(true);
         this.ui.dragHandle.draggable({
             appendTo: '.js-module-region',
@@ -119,13 +119,13 @@ export default Marionette.CompositeView.extend({
         const collapsed = this.model.getCollapsed();
 
         if (collapsed) {
-            this.$el.children(this.childViewContainer).hide();
-            this.$el.addClass(this.classes.collapsed);
-            this.$el.removeClass(this.classes.expanded);
+            this.el.children(this.childViewContainer).setAttribute('displayNone', true);
+            this.el.classList.add(this.classes.collapsed);
+            this.el.classList.remove(this.classes.expanded);
         } else {
-            this.$el.children(this.childViewContainer).show();
-            this.$el.removeClass(this.classes.collapsed);
-            this.$el.addClass(this.classes.expanded);
+            this.el.children(this.childViewContainer).removeAttribute('displayNone');;
+            this.el.classList.remove(this.classes.collapsed);
+            this.el.classList.add(this.classes.expanded);
         }
         if (!noTrigger) {
             this.trigger('context:toggle', collapsed);
@@ -171,7 +171,7 @@ export default Marionette.CompositeView.extend({
         const draggableItemSuffix = componentModel.get('fieldType').toLowerCase();
         dragHelper.find('.js-drag-title').text(componentModel.get('name'));
         dragHelper.find('.js-drag-subtitle').text(componentModel.get('pathNames'));
-        dragHelper.addClass(paletteItemClassNameSuffix + draggableItemSuffix);
+        dragHelper.classList.add(paletteItemClassNameSuffix + draggableItemSuffix);
     },
 
     __onDblClick(view, model) {

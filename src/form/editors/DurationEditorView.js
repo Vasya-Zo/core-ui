@@ -148,23 +148,18 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
 
     setPermissions(enabled, readonly) {
         BaseItemEditorView.prototype.setPermissions.call(this, enabled, readonly);
-        if (enabled && !readonly && !this.options.hideClearButton) {
-            this.ui.clear.show();
-        } else {
-            this.ui.clear.hide();
-        }
     },
 
     __setEnabled(enabled) {
         BaseItemEditorView.prototype.__setEnabled.call(this, enabled);
-        this.ui.input.prop('disabled', !enabled);
+        this.ui.input.setAttribute('disabled', !enabled);
     },
 
     __setReadonly(readonly) {
         BaseItemEditorView.prototype.__setReadonly.call(this, readonly);
         if (this.getEnabled()) {
-            this.ui.input.prop('readonly', readonly);
-            this.ui.input.prop('tabindex', readonly ? -1 : 0);
+            this.ui.input.setAttribute('readonly', readonly);
+            this.ui.input.setAttribute('tabindex', readonly ? -1 : 0);
         }
     },
 
@@ -219,14 +214,14 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
         if (!this.options.showEmptyParts) {
             if (Object.values(newValueObject).every(value => value === 0)) {
                 newValue = null;
-                this.ui.input.val(null);
+                this.ui.input.value = null;
             }
         }
         this.__value(newValue, true);
     },
 
     getCaretPos() {
-        return this.ui.input[0].selectionStart;
+        return this.ui.input.selectionStart;
     },
 
     fixCaretPos(pos) {
@@ -243,7 +238,7 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
     },
 
     setCaretPos(pos) {
-        this.ui.input[0].setSelectionRange(pos, pos);
+        this.ui.input.setSelectionRange(pos, pos);
     },
 
     getSegmentIndex(pos) {
@@ -285,7 +280,7 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
             segments.push('(\\S*)\\s+\\S*');
         }
         const regexStr = `^\\s*${segments.join('\\s+')}$`;
-        const result = new RegExp(regexStr, 'g').exec(this.ui.input.val());
+        const result = new RegExp(regexStr, 'g').exec(this.ui.input.value);
         return index !== undefined ? result[index + 1] : result.slice(1, this.focusableParts.length + 1);
     },
 
@@ -299,8 +294,8 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
         if (val.length > this.focusableParts[index].maxLength) {
             return false;
         }
-        const str = this.ui.input.val();
-        this.ui.input.val(str.substr(0, this.focusableParts[index].start) + val + str.substr(this.focusableParts[index].end));
+        const str = this.ui.input.value;
+        this.ui.input.value = str.substr(0, this.focusableParts[index].start) + val + str.substr(this.focusableParts[index].end);
         return true;
     },
 
@@ -485,12 +480,12 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
     },
 
     __replaceModeFor(arrChar, insertChar, direction = 'right') {
-        const inpValue = this.ui.input.val();
+        const inpValue = this.ui.input.value;
         const dirClarity = direction === 'left' ? 1 : 0;
         const caretPos = this.getCaretPos();
         const valueAfterCaret = inpValue[caretPos - dirClarity];
         if (arrChar.some(char => char === valueAfterCaret)) {
-            this.ui.input.val(this.__replaceChar(inpValue, caretPos - dirClarity, insertChar));
+            this.ui.input.value = this.__replaceChar(inpValue, caretPos - dirClarity, insertChar);
             this.setCaretPos(caretPos);
         }
     },
@@ -610,21 +605,21 @@ export default (formRepository.editors.Duration = BaseItemEditorView.extend({
         this.state.displayValue = this.__normalizeDuration(this.state.displayValue);
         const inEditMode = this.state.mode === stateModes.EDIT;
         const val = this.__createInputString(this.state.displayValue, inEditMode);
-        this.ui.input.val(val);
+        this.ui.input.value = val;
         if (this.options.showTitle && !inEditMode) {
-            this.$el.prop('title', val);
+            this.el.setAttribute('title', val);
         }
-        this.$el.toggleClass(classes.FOCUSED, inEditMode);
+        this.el.classList.toggle(classes.FOCUSED, inEditMode);
     },
 
-    __onMouseenter() {
+    __onMouseenter() { //todo permissions
         if (this.options.hideClearButton) {
             return;
         }
         this.el.insertAdjacentHTML('beforeend', this.value ? iconWrapRemove : iconWrapNumber);
     },
 
-    __onMouseleave() {
+    __onMouseleave() { //todo permissions
         if (this.options.hideClearButton) {
             return;
         }

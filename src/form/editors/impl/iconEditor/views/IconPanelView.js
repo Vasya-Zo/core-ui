@@ -59,8 +59,8 @@ export default Marionette.View.extend({
             const matchesItems = this.__searchItem(value);
             this.__showSearchResult(matchesItems);
         } else {
-            this.getRegion('collectionAreaRegion').$el.show();
-            this.getRegion('searchAreaRegion').$el.hide();
+            this.getRegion('collectionAreaRegion').$el.removeAttribute('displayNone');;
+            this.getRegion('searchAreaRegion').$el.setAttribute('displayNone', true);
         }
     },
 
@@ -76,8 +76,8 @@ export default Marionette.View.extend({
 
         const searchAreaRegion = this.getRegion('searchAreaRegion');
         searchAreaRegion.show(iconItemCategoryView);
-        searchAreaRegion.$el.show();
-        this.getRegion('collectionAreaRegion').$el.hide();
+        searchAreaRegion.$el.removeAttribute('displayNone');;
+        this.getRegion('collectionAreaRegion').$el.setAttribute('displayNone', true);
         this.listenTo(iconItemCategoryView, 'click:item', id => this.trigger('click:item', id));
     },
 

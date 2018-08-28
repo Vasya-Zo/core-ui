@@ -68,7 +68,7 @@ formRepository.editors.RadioGroup = BaseCollectionEditorView.extend(
                 cv.setEnabled(isEnabled);
             });
             if (this.getEnabled()) {
-                this.$el.prop('tabindex', readonly ? -1 : 0);
+                this.el.setAttribute('tabindex', readonly ? -1 : 0);
             }
         },
 

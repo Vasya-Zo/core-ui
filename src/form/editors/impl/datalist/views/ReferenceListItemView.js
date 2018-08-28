@@ -39,10 +39,10 @@ export default Marionette.View.extend({
     },
 
     __markSelected() {
-        this.$el.find('.js-checkbox') && this.$el.find('.js-checkbox').addClass(classes.SELECTED);
+        this.el.find('.js-checkbox') && this.el.find('.js-checkbox').classList.add(classes.SELECTED);
     },
 
     __markDeselected() {
-        this.$el.find('.js-checkbox') && this.$el.find('.js-checkbox').removeClass(classes.SELECTED);
+        this.el.find('.js-checkbox') && this.el.find('.js-checkbox').classList.remove(classes.SELECTED);
     }
 });

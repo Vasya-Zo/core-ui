@@ -191,7 +191,8 @@ export default Marionette.View.extend({
     __updateIndex(index) {
         if (this.model && this.isRendered()) {
             this.model.currentIndex = index;
-            this.ui.index.text(index);
+
+            this.ui.index.innerHTML = index;
         }
     },
 
@@ -206,21 +207,21 @@ export default Marionette.View.extend({
     __updateState(model, stateCollection) {
         if (this.selectAllCell) {
             if (stateCollection === 'none') {
-                this.ui.checkbox.removeClass(classes.checked);
-                this.ui.checkbox.removeClass(classes.checked_some);
+                this.ui.checkbox.classList.remove(classes.checked);
+                this.ui.checkbox.classList.remove(classes.checked_some);
             }
             if (stateCollection === 'all') {
-                this.ui.checkbox.addClass(classes.checked);
-                this.ui.checkbox.removeClass(classes.checked_some);
+                this.ui.checkbox.classList.add(classes.checked);
+                this.ui.checkbox.classList.remove(classes.checked_some);
             }
             if (stateCollection === 'some') {
-                this.ui.checkbox.removeClass(classes.checked);
-                this.ui.checkbox.addClass(classes.checked_some);
+                this.ui.checkbox.classList.remove(classes.checked);
+                this.ui.checkbox.classList.add(classes.checked_some);
             }
         } else if (this.model.checked) {
-                this.ui.checkbox.addClass(classes.checked);
+            this.ui.checkbox.classList.add(classes.checked);
         } else {
-                this.ui.checkbox.removeClass(classes.checked);
+            this.ui.checkbox.classList.remove(classes.checked);
         }
     },
 

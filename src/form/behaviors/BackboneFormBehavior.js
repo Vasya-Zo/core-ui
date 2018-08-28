@@ -263,7 +263,7 @@ const Form = Marionette.Object.extend({
         const $target = this.options.$target;
         const rootView = window.app.getView();
 
-        $target.find(`[data-${componentType}s]`).each((i, el) => {
+        $target.querySelectorAll(`[data-${componentType}s]`).forEach(el => {
             if ((!this.model.has('uniqueFormId') && !el.hasAttribute(`${componentType}-for`)) || this.model.get('uniqueFormId').has(el.getAttribute(`${componentType}-for`))) {
                 const key = el.getAttribute(`data-${componentType}s`);
                 const regionName = `${key}Region`;
@@ -283,9 +283,9 @@ const Form = Marionette.Object.extend({
  * The options described here should be passed as behavior options (look into Marionette documentation for details).
  * @name BackboneFormBehavior
  * @memberof module:core.form.behaviors
- * @class This behavior turns any Marionette.View into Backbone.Form. To do this Backbone.Form scans this.$el at the moment
+ * @class This behavior turns any Marionette.View into Backbone.Form. To do this Backbone.Form scans this.el at the moment
  * DOM-elements with corresponding Backbone.Form data-attributes.
- * It's important to note that Backbone.Form will scan the whole this.$el including nested regions that might lead to unexpected behavior.
+ * It's important to note that Backbone.Form will scan the whole this.el including nested regions that might lead to unexpected behavior.
  * Possible events:<ul>
  *     <li><code>'form:render' (form)</code> - the form has rendered and available via <code>form</code> property of the view.</li>
  * </ul>
@@ -345,7 +345,7 @@ export default Marionette.Behavior.extend({
         const form = new Form({
             model,
             schema,
-            $target: this.$el,
+            $target: this.el,
             field: this.options.field
         });
         this.view.form = this.form = form;

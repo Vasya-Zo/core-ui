@@ -30,14 +30,14 @@ export default Marionette.View.extend({
 
     setValue(value) {
         const displayValue = DateTimeService.getTimeDisplayValue(value, this.options.timeDisplayFormat);
-        this.ui.input.val(displayValue);
+        this.ui.input.value = displayValue;
         if (this.getOption('showTitle')) {
-            this.$el.prop('title', displayValue);
+            this.el.setAttribute('title', displayValue);
         }
     },
 
     setPlaceholder() {
-        this.ui.input.prop('placeholder', LocalizationService.get('CORE.FORM.EDITORS.TIME.EMPTYPLACEHOLDER'));
+        this.ui.input.setAttribute('placeholder', LocalizationService.get('CORE.FORM.EDITORS.TIME.EMPTYPLACEHOLDER'));
     },
 
     __onClick() {

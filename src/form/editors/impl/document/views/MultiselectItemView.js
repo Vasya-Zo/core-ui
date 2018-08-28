@@ -80,7 +80,7 @@ export default Marionette.View.extend({
                 this.showChildView('reviseRegion', this.documentRevisionPopout);
                 this.isRevisonButtonShown = true;
             } else {
-                this.ui.revise.show();
+                this.ui.revise.removeAttribute('displayNone');;
             }
         }
     },
@@ -90,7 +90,7 @@ export default Marionette.View.extend({
             this.el.removeChild(this.el.lastElementChild);
         }
         if (!this.isRevisionOpen) {
-            this.ui.revise.hide();
+            this.ui.revise.setAttribute('displayNone', true);
         }
     }
 });

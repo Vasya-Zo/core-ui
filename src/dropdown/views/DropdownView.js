@@ -121,15 +121,15 @@ export default Marionette.View.extend({
             args[0] = `button:${args[0]}`;
             this.triggerMethod(...args);
         });
-        const el = this.button.render().$el;
-        this.$el.append(el);
+        const el = this.button.render().el;
+        this.el.append(el);
 
         this.isShown = true;
         this.button.on('change:content', () => this.panelEl && this.__adjustPosition(this.panelEl));
 
-        el.on('click', this.__handleClick.bind(this));
+        el.addEventListener('click', this.__handleClick.bind(this));
 
-        this.$el.attr('tabindex', -1);
+        this.el.setAttribute('tabindex', -1);
     },
 
     onDestroy() {

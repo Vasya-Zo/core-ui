@@ -85,21 +85,21 @@ export default (formRepository.editors.Boolean = BaseItemEditorView.extend(
 
         __updateState() {
             if (this.value) {
-                this.$el.addClass(classes.CHECKED);
-                this.$el.removeClass(classes.CHECKED_SOME);
+                this.el.classList.add(classes.CHECKED);
+                this.el.classList.remove(classes.CHECKED_SOME);
             } else if (this.value === false || !this.options.thirdState) {
-                this.$el.removeClass(classes.CHECKED_SOME);
-                this.$el.removeClass(classes.CHECKED);
+                this.el.classList.remove(classes.CHECKED_SOME);
+                this.el.classList.remove(classes.CHECKED);
             } else {
-                this.$el.removeClass(classes.CHECKED);
-                this.$el.addClass(classes.CHECKED_SOME);
+                this.el.classList.remove(classes.CHECKED);
+                this.el.classList.add(classes.CHECKED_SOME);
             }
         },
 
         __setReadonly(readonly) {
             BaseItemEditorView.prototype.__setReadonly.call(this, readonly);
             if (this.getEnabled()) {
-                this.$el.prop('tabindex', readonly ? -1 : 0);
+                this.el.setAttribute('tabindex', readonly ? -1 : 0);
             }
         },
 

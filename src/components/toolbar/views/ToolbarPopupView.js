@@ -35,7 +35,7 @@ export default ButtonView.extend({
             this.__closePopout();
             reqres.request('form:clone', model.id);
         });
-        this.$el.append(this.popup.render().$el);
+        this.el.append(this.popup.render().$el);
     },
 
     onDestroy() {

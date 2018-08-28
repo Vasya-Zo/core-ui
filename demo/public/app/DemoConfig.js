@@ -1,5 +1,5 @@
 /**
- * Case path is gonna be like: core/demo/cases/{sectionId}/{groupId}/{caseId}.js
+ * Case path is gonna be like: Core/demo/cases/{sectionId}/{groupId}/{caseId}.js
  */
 export default {
     sections: [

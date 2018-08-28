@@ -11,7 +11,7 @@ export default function () {
     });
 
     return new CanvasView({
-        view: new core.form.editors.DatalistEditor({
+        view: new Core.form.editors.DatalistEditor({
             model,
             key: 'DatalistValue',
             autocommit: true,

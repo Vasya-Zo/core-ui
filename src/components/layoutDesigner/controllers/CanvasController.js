@@ -139,9 +139,9 @@ export default Marionette.Object.extend({
                 if (closestZone) {
                     closestZone.enter();
                 }
-                ui.helper.removeClass('dev-removing-helper');
+                ui.helper.classList.remove('dev-removing-helper');
             } else if (!this.view.canDrop) {
-                ui.helper.addClass('dev-removing-helper');
+                ui.helper.classList.add('dev-removing-helper');
             }
         }
     },

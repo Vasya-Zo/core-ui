@@ -1,6 +1,5 @@
 //@flow
 import { comparators, helpers } from 'utils';
-import GridColumnHeaderView from './GridColumnHeaderView';
 import template from '../templates/gridheader.hbs';
 
 /*
@@ -19,7 +18,6 @@ import template from '../templates/gridheader.hbs';
  * @param {Object} options Constructor options
  * @param {Array} options.columns массив колонок
  * @param {Object} options.gridEventAggregator ?
- * @param {Backbone.View} options.gridColumnHeaderView View используемый для отображения заголовка (шапки) списка
  * */
 
 const classes = {
@@ -27,18 +25,12 @@ const classes = {
     dragover: 'dragover'
 };
 
-const GridHeaderView = Marionette.View.extend({
+export default Marionette.View.extend({
     initialize(options) {
-        if (!options.columns) {
-            throw new Error('You must provide columns definition ("columns" option)');
-        }
-        if (!options.gridEventAggregator) {
-            throw new Error('You must provide grid event aggregator ("gridEventAggregator" option)');
-        }
+        helpers.ensureOption(options, 'columns');
+        helpers.ensureOption(options, 'gridEventAggregator');
 
         this.gridEventAggregator = options.gridEventAggregator;
-        this.gridColumnHeaderView = options.gridColumnHeaderView || GridColumnHeaderView;
-        this.gridColumnHeaderViewOptions = options.gridColumnHeaderViewOptions;
         this.columns = options.columns;
         this.collection = options.gridEventAggregator.collection;
 
@@ -68,7 +60,7 @@ const GridHeaderView = Marionette.View.extend({
     },
 
     constants: {
-        MIN_COLUMN_WIDTH: 50
+        MIN_COLUMN_WIDTH: 50 //todo wtf unify
     },
 
     templateContext() {
@@ -85,36 +77,21 @@ const GridHeaderView = Marionette.View.extend({
 
         this.collapsed = !this.getOption('expandOnShow');
 
-        this.ui.gridHeaderColumn.each((i, el) => {
+        this.ui.gridHeaderColumn.forEach((el, i) => { //TODO return aligh right
             const column = this.columns[i];
-            const view = new this.gridColumnHeaderView(
-                Object.assign(this.gridColumnHeaderViewOptions || {}, {
-                    title: column.title,
-                    column,
-                    gridEventAggregator: this.gridEventAggregator
-                })
-            );
+            const view = `${column.title || ''}${column.sorting === 'asc' ? '<span className="sort_down"></span>' : '<span class="sort_up"></span>'}`;
+
             this.__columnEls.push(view);
-            this.listenTo(view, 'columnSort', this.__handleColumnSort);
-            el.appendChild(view.render().el);
+            this.listenTo(view, 'click', this.__handleColumnSort);
+            el.insertAdjacentHTML('afterbegin', view);
             el.classList.add(column.columnClass);
         });
 
-        if (this.options.isTree) {
+        if (this.options.isTree) { //TODO return aligh right
             this.__columnEls[0].el.insertAdjacentHTML(
                 'afterbegin',
                 `<span class="collapsible-btn js-collapsible-button ${this.collapsed === false ? classes.expanded : ''}"></span>&nbsp;`
             );
-        }
-
-        // if (this.options.expandOnShow) {
-        //     this.__updateCollapseAll(false);
-        // }
-    },
-
-    onDestroy() {
-        if (this.__columnEls) {
-            this.__columnEls.forEach(c => c.destroy());
         }
     },
 
@@ -229,8 +206,9 @@ const GridHeaderView = Marionette.View.extend({
 
     __updateCollapseAll(collapsed) {
         this.collapsed = collapsed;
-        this.$('.js-collapsible-button').toggleClass(classes.expanded, !collapsed);
+        this.$('.js-collapsible-button').classList.toggle(classes.expanded, !collapsed);
     },
+
     __handleDragOver(event) {
         if (!this.collection.draggingModel) {
             return;
@@ -272,5 +250,3 @@ const GridHeaderView = Marionette.View.extend({
         }
     }
 });
-
-export default GridHeaderView;

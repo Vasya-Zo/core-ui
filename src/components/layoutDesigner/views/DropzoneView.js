@@ -22,29 +22,29 @@ export default Marionette.View.extend({
      * @returns {Number} - расстояние
      */
     getDistance(position) {
-        const elPosition = this.$el.offset();
+        const elPosition = this.el.offset();
 
-        if (position.x < elPosition.left || position.x > elPosition.left + this.$el.width()) {
+        if (position.x < elPosition.left || position.x > elPosition.left + this.el.width()) {
             return Number.MAX_VALUE;
         }
 
-        return Math.abs(position.y - (elPosition.top + this.$el.height() / 2));
+        return Math.abs(position.y - (elPosition.top + this.el.offsetHeight / 2));
     },
 
     activate() {
-        this.$el.addClass(classes.DROPZONE_ACTIVE);
+        this.el.classList.add(classes.DROPZONE_ACTIVE);
     },
 
     deactivate() {
-        this.$el.removeClass(classes.DROPZONE_ACTIVE);
+        this.el.classList.remove(classes.DROPZONE_ACTIVE);
     },
 
     enter() {
-        this.$el.addClass(classes.DROPZONE_HOVER);
+        this.el.classList.add(classes.DROPZONE_HOVER);
     },
 
     leave() {
-        this.$el.removeClass(classes.DROPZONE_HOVER);
+        this.el.classList.remove(classes.DROPZONE_HOVER);
     },
 
     drop(dragContext) {

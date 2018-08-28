@@ -3,15 +3,13 @@ import LocalizationService from '../../../../../services/LocalizationService';
 import template from '../templates/input.hbs';
 
 const classes = {
-    EMPTY: ' empty'
+    EMPTY: 'empty'
 };
 
 export default Marionette.View.extend({
     initialize(options) {
         this.reqres = options.reqres;
         this.parent = options.parent;
-
-        this.fetchDelayId = _.uniqueId('fetch-delay-id-');
 
         this.filterValue = '';
     },
@@ -57,11 +55,11 @@ export default Marionette.View.extend({
     },
 
     __getRawValue() {
-        return this.ui.input.val();
+        return this.ui.input.value;
     },
 
     updateInput(value = '') {
-        this.ui.input.val(value);
+        this.ui.input.value = value;
     },
 
     __search(e) {
@@ -101,6 +99,8 @@ export default Marionette.View.extend({
     __updateInputPlaceholder() {
         const empty = this.model.get('empty');
         const placeholder = empty ? LocalizationService.get('CORE.FORM.EDITORS.BUBBLESELECT.NOTSET') : '';
-        this.ui.input.attr({ placeholder }).toggleClass(classes.EMPTY, empty);
+
+        this.ui.input.setAttribute('placeholder', placeholder);
+        this.ui.input.classList.toggle(classes.EMPTY, empty);
     }
 });

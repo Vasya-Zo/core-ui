@@ -16,9 +16,9 @@ export default Marionette.View.extend({
 
     updateRadio() {
         if (this.model.selected) {
-            this.$el.addClass('selected');
+            this.el.classList.add('selected');
         } else {
-            this.$el.removeClass('selected');
+            this.el.classList.remove('selected');
         }
     },
 

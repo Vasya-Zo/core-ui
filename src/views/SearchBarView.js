@@ -31,7 +31,7 @@ export default Marionette.View.extend({
     },
 
     onRender() {
-        this.ui.clear.toggle(!!this.ui.input.val());
+        this.__adjustClearButtonVisibility(!!this.ui.input.value);
     },
 
     focus() {
@@ -41,9 +41,9 @@ export default Marionette.View.extend({
     },
 
     __search() {
-        const value = this.ui.input.val();
+        const value = this.ui.input.value;
         this.__triggerSearch(value);
-        this.ui.clear.toggle(!!value);
+        this.__adjustClearButtonVisibility(!!value);
     },
 
     __triggerSearch(value) {
@@ -51,8 +51,16 @@ export default Marionette.View.extend({
     },
 
     __clear() {
-        this.ui.input.val('');
+        this.ui.input.value = '';
         this.__search();
         this.ui.input.focus();
+    },
+
+    __adjustClearButtonVisibility(isShown) {
+        if (isShown) {
+            this.ui.clear.removeAttribute('displayNone');
+        } else {
+            this.ui.clear.setAttribute('displayNone', true);
+        }
     }
 });

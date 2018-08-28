@@ -5,7 +5,7 @@ import ListSearchCanvasView from 'demoPage/views/ListSearchCanvasView';
 
 export default function() {
     // 2. Create VirtualCollection that use this model (and do other stuff maybe)
-    const ListItemCollection = core.collections.VirtualCollection();
+    const ListItemCollection = Core.collections.VirtualCollection();
 
     // 3. Get some data (inline or by collection.fetch)
     const collection = new ListItemCollection(undefined, { isSliding: true });
@@ -26,11 +26,11 @@ export default function() {
             title: '.js-title'
         },
 
-        behaviors: [core.list.views.behaviors.ListItemViewBehavior],
+        behaviors: [Core.list.views.behaviors.ListItemViewBehavior],
 
         // It's your responsibility to visualize text highlight
         onHighlighted(fragment) {
-            const text = core.utils.htmlHelpers.highlightText(this.model.get('title'), fragment);
+            const text = Core.utils.htmlHelpers.highlightText(this.model.get('title'), fragment);
             this.ui.title.html(text);
         },
         onUnhighlighted() {
@@ -39,7 +39,7 @@ export default function() {
     });
 
     // 5. [NEW] Create searchbar view (or whatever you want to change filter function) and implement search
-    const searchBarView = new core.views.SearchBarView();
+    const searchBarView = new Core.views.SearchBarView();
     searchBarView.on('search', text => {
         if (!text) {
             collection.filter(null);
@@ -53,7 +53,7 @@ export default function() {
     });
 
     // 6. At last, create list view bundle (ListView and ScrollbarView)
-    const listView = core.list.factory.createDefaultList({
+    const listView = Core.list.factory.createDefaultList({
         collection, // Take a note that in simple scenario you can pass in
         // a regular Backbone.Collection or even plain javascript array
         listViewOptions: {

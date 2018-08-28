@@ -118,7 +118,7 @@ export default (formRepository.editors.Expression = BaseLayoutEditorView.extend(
                 alias: LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.EXPRESSIONALIAS')
             })
         );
-        this.ui.expression.text(this.options.defaultExpression);
+        this.ui.expression.innerHtml = this.options.defaultExpression;
         this.ui.expression.data('value', this.options.defaultExpression);
     },
 
@@ -133,7 +133,7 @@ export default (formRepository.editors.Expression = BaseLayoutEditorView.extend(
                 alias: LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.CSHARPALIAS')
             })
         );
-        this.ui.script.text(this.defaultScriptText);
+        this.ui.script.innerHtml = this.defaultScriptText;
         this.ui.script.data('value', this.defaultScriptText);
     },
 
@@ -161,7 +161,7 @@ export default (formRepository.editors.Expression = BaseLayoutEditorView.extend(
 
         this.listenTo(this.contextValueEditor, 'change', () => this.__updateValue(this.contextValueEditor.getValue(), true));
 
-        this.ui.script.text(LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.EMPTYTEXT'));
+        this.ui.script.innerHtml = LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.EMPTYTEXT');
     },
 
     renderValueOptionPopout() {
@@ -222,8 +222,8 @@ export default (formRepository.editors.Expression = BaseLayoutEditorView.extend(
     },
 
     updateDefaultEditor() {
-        this.ui[this.value.type].toggleClass('empty', _.isEmpty(this.value.value));
-        this.ui[this.value.type].text(_.isEmpty(this.value.value) ? LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.EMPTYTEXT') : this.value.value);
+        this.ui[this.value.type].classList.toggle('empty', _.isEmpty(this.value.value));
+        this.ui[this.value.type].innerHtml = _.isEmpty(this.value.value) ? LocalizationService.get('CORE.FORM.EDITORS.EXPRESSION.EMPTYTEXT') : this.value.value;
     },
 
     __valueTypeSelected(model) {
@@ -294,10 +294,10 @@ export default (formRepository.editors.Expression = BaseLayoutEditorView.extend(
         if (!this.el.innerText) {
             return;
         }
-        this.ui.value.toggleClass('hidden', this.value.type !== 'value');
-        this.ui.expression.toggleClass('hidden', this.value.type !== 'expression');
-        this.ui.script.toggleClass('hidden', this.value.type !== 'script');
-        this.ui.context.toggleClass('hidden', this.value.type !== 'context');
+        this.ui.value.classList.toggle('hidden', this.value.type !== 'value');
+        this.ui.expression.classList.toggle('hidden', this.value.type !== 'expression');
+        this.ui.script.classList.toggle('hidden', this.value.type !== 'script');
+        this.ui.context.classList.toggle('hidden', this.value.type !== 'context');
 
         const valueTypeModel = this.valueOptionCollection.find(f => f.get('id') === this.value.type);
         if (valueTypeModel && this.buttonModel) {

@@ -58,7 +58,7 @@ export default Marionette.CollectionView.extend({
     childViewOptions() {
         return {
             reqres: this.reqres,
-            parent: this.$el,
+            parent: this.el,
             enabled: this.options.enabled,
             createValueUrl: this.options.createValueUrl,
             showEditButton: this.options.showEditButton,

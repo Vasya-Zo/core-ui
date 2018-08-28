@@ -61,7 +61,7 @@ export default Marionette.View.extend({
         });
 
         if (this.showAddNewButton) {
-            this.$el.addClass('dropdown__wrp_reference-button');
+            this.el.classList.add('dropdown__wrp_reference-button');
             const addNewButton = new AddNewButtonView({ reqres: this.reqres });
             this.showChildView('addNewButtonRegion', addNewButton);
         }
@@ -91,7 +91,7 @@ export default Marionette.View.extend({
         const warningRegion = this.getRegion('elementsQuantityWarningRegion');
 
         if (warningRegion) {
-            count > collectionLength ? warningRegion.$el.show() : warningRegion.$el.hide();
+            count > collectionLength ? warningRegion.el.removeAttribute('displayNone') : warningRegion.el.setAttribute('displayNone', true);
         }
     },
 

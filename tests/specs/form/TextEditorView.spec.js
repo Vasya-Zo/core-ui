@@ -392,7 +392,7 @@ describe('Editors', () => {
             //expect(view.$el.closest('.js-clear-button')).toBeHidden();
             expect(onChangeCallback).toHaveBeenCalledTimes(0);
             expect(input.val()).toEqual('text');
-            expect(input.prop('readonly')).toEqual(true);
+            expect(input.setAttribute('readonly')).toEqual(true);
         });
 
         it('should be hidden if flag is passed', () => {

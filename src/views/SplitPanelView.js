@@ -29,7 +29,7 @@ export default Marionette.View.extend({
 
         this.listenTo(GlobalEventService, 'window:resize', _.throttle(this.__handleWindowResize, config.throttleDelay));
         this.on('render', () => {
-            this.$el.addClass('double-panels');
+            this.el.classList.add('double-panels');
         });
         this.on('show', () => {
             this.__handleWindowResize();
@@ -87,8 +87,8 @@ export default Marionette.View.extend({
     __startDragging(event) {
         this.dragContext = {
             pageX: event.pageX,
-            containerWidth: this.$el.width(),
-            panel1InitialWidth: this.ui.panel1.width()
+            containerWidth: this.el.offsetWidth,
+            panel1InitialWidth: this.ui.panel1.offsetWidth
         };
 
         document.addEventListener('mousemove', this.__handleDocumentMouseMove);
@@ -122,10 +122,10 @@ export default Marionette.View.extend({
         }
 
         if (!$panelEl.hasClass(newClass)) {
-            $panelEl.removeClass(classes.smallPanelSize);
-            $panelEl.removeClass(classes.middlePanelSize);
-            $panelEl.removeClass(classes.largePanelSize);
-            $panelEl.addClass(newClass);
+            $panelEl.classList.remove(classes.smallPanelSize);
+            $panelEl.classList.remove(classes.middlePanelSize);
+            $panelEl.classList.remove(classes.largePanelSize);
+            $panelEl.classList.add(newClass);
         }
     },
 

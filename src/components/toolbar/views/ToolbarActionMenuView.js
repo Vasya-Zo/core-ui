@@ -19,7 +19,7 @@ export default Marionette.View.extend({
         });
 
         this.listenTo(this.menu, 'panel:click:item', this.__handleSeveritySelect);
-        this.$el.append(this.menu.render().$el);
+        this.el.append(this.menu.render().$el);
     },
 
     __handleSeveritySelect(view) {

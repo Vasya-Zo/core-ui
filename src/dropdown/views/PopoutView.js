@@ -168,8 +168,8 @@ export default Marionette.View.extend({
             this.getRegion('buttonRegion').$el.append(`<i class="js-default-anchor ${classes.DEFAULT_ANCHOR}"></i>`);
         }
 
-        this.ui.button.toggleClass(classes.CUSTOM_ANCHOR_BUTTON, this.options.customAnchor);
-        this.ui.button.toggleClass(classes.DEFAULT_ANCHOR_BUTTON, !this.options.customAnchor);
+        this.ui.button.classList.toggle(classes.CUSTOM_ANCHOR_BUTTON, this.options.customAnchor);
+        this.ui.button.classList.toggle(classes.DEFAULT_ANCHOR_BUTTON, !this.options.customAnchor);
     },
 
     onDestroy() {
@@ -249,8 +249,8 @@ export default Marionette.View.extend({
                 break;
         }
 
-        $panelEl.toggleClass(classes.FLOW_LEFT, this.options.popoutFlow === popoutFlow.LEFT);
-        $panelEl.toggleClass(classes.FLOW_RIGHT, this.options.popoutFlow === popoutFlow.RIGHT);
+        $panelEl.classList.toggle(classes.FLOW_LEFT, this.options.popoutFlow === popoutFlow.LEFT);
+        $panelEl.classList.toggle(classes.FLOW_RIGHT, this.options.popoutFlow === popoutFlow.RIGHT);
 
         $panelEl.css(css);
     },
@@ -287,8 +287,8 @@ export default Marionette.View.extend({
         }
 
         // class adjustments
-        $panelEl.toggleClass(classes.DIRECTION_UP, direction === popoutDirection.UP);
-        $panelEl.toggleClass(classes.DIRECTION_DOWN, direction === popoutDirection.DOWN);
+        $panelEl.classList.toggle(classes.DIRECTION_UP, direction === popoutDirection.UP);
+        $panelEl.classList.toggle(classes.DIRECTION_DOWN, direction === popoutDirection.DOWN);
 
         // panel positioning
         let top = 0;
@@ -370,8 +370,8 @@ export default Marionette.View.extend({
         }
 
         // class adjustments
-        $panelEl.toggleClass(classes.DIRECTION_UP, direction === popoutDirection.UP);
-        $panelEl.toggleClass(classes.DIRECTION_DOWN, direction === popoutDirection.DOWN);
+        $panelEl.classList.toggle(classes.DIRECTION_UP, direction === popoutDirection.UP);
+        $panelEl.classList.toggle(classes.DIRECTION_DOWN, direction === popoutDirection.DOWN);
 
         // panel positioning
         let top = 0;
@@ -464,8 +464,8 @@ export default Marionette.View.extend({
                 break;
         }
 
-        $panelEl.toggleClass(classes.DISPLACEMENT_LEFT, displacement === popoutDisplacement.LEFT);
-        $panelEl.toggleClass(classes.DISPLACEMENT_RIGHT, displacement === popoutDisplacement.RIGHT);
+        $panelEl.classList.toggle(classes.DISPLACEMENT_LEFT, displacement === popoutDisplacement.LEFT);
+        $panelEl.classList.toggle(classes.DISPLACEMENT_RIGHT, displacement === popoutDisplacement.RIGHT);
 
         $panelEl.css(css);
     },
@@ -529,7 +529,7 @@ export default Marionette.View.extend({
             args[0] = `panel:${args[0]}`;
             this.triggerMethod(...args);
         });
-        this.$el.addClass(classes.OPEN);
+        this.el.classList.add(classes.OPEN);
 
         this.popupId = WindowService.showTransientPopup(this.panelView, {
             fadeBackground: this.options.fade,
@@ -565,7 +565,7 @@ export default Marionette.View.extend({
             return;
         }
         this.trigger('before:close', this);
-        this.$el.removeClass(classes.OPEN);
+        this.el.classList.remove(classes.OPEN);
 
         WindowService.closePopup(this.popupId);
 

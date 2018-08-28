@@ -111,8 +111,8 @@ export default Marionette.View.extend({
             this.listenTo(stepperView, 'stepper:item:selected', this.__handleStepperSelect);
         }
         if (!this.getOption('showMoveButtons')) {
-            this.ui.buttonMoveNext.hide();
-            this.ui.buttonMovePrevious.hide();
+            this.ui.buttonMoveNext.style.displayText = 'none';
+            this.ui.buttonMovePrevious.style.displayText = 'none';
         }
     },
 

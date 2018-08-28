@@ -59,7 +59,7 @@ export default BaseLayoutEditorView.extend({
         });
 
         this.popupPanel.on('panel:click:item', id => {
-            this.ui.deleteIconButton.show();
+            this.ui.deleteIconButton.removeAttribute('displayNone');;
             this.model.set('iconClass', id);
             this.trigger('click:item', id);
             this.close();
@@ -67,7 +67,7 @@ export default BaseLayoutEditorView.extend({
 
         this.showChildView('iconSelectorHeaderRegion', this.popupPanel);
         if (!this.model.get('iconClass')) {
-            this.ui.deleteIconButton.hide();
+            this.ui.deleteIconButton.setAttribute('displayNone', true);
         }
     },
 
@@ -98,6 +98,6 @@ export default BaseLayoutEditorView.extend({
     __onDeleteIconClick() {
         this.model.set('iconClass', null);
         this.trigger('click:item', null);
-        this.ui.deleteIconButton.hide();
+        this.ui.deleteIconButton.setAttribute('displayNone', true);
     }
 });

@@ -45,8 +45,8 @@ export default Marionette.View.extend({
     },
 
     setPosition(position) {
-        this.$el.css('top', position.top);
-        this.$el.css('left', position.left);
+        this.el.css('top', position.top);
+        this.el.css('left', position.left);
     },
 
     __onKeydown(e) {

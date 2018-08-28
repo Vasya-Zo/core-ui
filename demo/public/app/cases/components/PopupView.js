@@ -34,7 +34,7 @@ export default function() {
     };
 
     const createPopup = () =>
-        new core.layout.Popup({
+        new Core.layout.Popup({
             size: {
                 width: '800px',
                 height: '700px'
@@ -46,7 +46,7 @@ export default function() {
                     text: 'Cancel',
                     customClass: 'btn-small btn-outline',
                     handler(popup) {
-                        core.services.WindowService.closePopup();
+                        Core.services.WindowService.closePopup();
                     }
                 },
                 {
@@ -55,34 +55,34 @@ export default function() {
                     customClass: 'btn-small',
                     handler(popup) {
                         popup.content.form.commit();
-                        core.services.WindowService.closePopup();
+                        Core.services.WindowService.closePopup();
                         alert(JSON.stringify(model.toJSON(), null, 4));
                     }
                 }
             ],
-            content: new core.layout.Form({
+            content: new Core.layout.Form({
                 model,
                 schema: formSchema,
-                content: new core.layout.TabLayout({
+                content: new Core.layout.TabLayout({
                     tabs: [
                         {
                             id: 'general',
                             name: 'General',
-                            view: new core.layout.VerticalLayout({
+                            view: new Core.layout.VerticalLayout({
                                 rows: [
-                                    core.layout.createFieldAnchor('name'),
-                                    new core.layout.HorizontalLayout({
-                                        columns: [core.layout.createFieldAnchor('idealDays'), core.layout.createFieldAnchor('dueDate')]
+                                    Core.layout.createFieldAnchor('name'),
+                                    new Core.layout.HorizontalLayout({
+                                        columns: [Core.layout.createFieldAnchor('idealDays'), Core.layout.createFieldAnchor('dueDate')]
                                     }),
-                                    core.layout.createFieldAnchor('description'),
-                                    core.layout.createEditorAnchor('computed')
+                                    Core.layout.createFieldAnchor('description'),
+                                    Core.layout.createEditorAnchor('computed')
                                 ]
                             })
                         },
                         {
                             id: 'expression',
                             name: 'Computed Expression',
-                            view: core.layout.createEditorAnchor('expression')
+                            view: Core.layout.createEditorAnchor('expression')
                         }
                     ]
                 })
@@ -94,7 +94,7 @@ export default function() {
 
         events: {
             'click .js-show-popup'() {
-                core.services.WindowService.showPopup(createPopup());
+                Core.services.WindowService.showPopup(createPopup());
             }
         }
     });

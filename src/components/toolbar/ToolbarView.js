@@ -38,7 +38,7 @@ export default Marionette.View.extend({
     onRender() {
         this.showChildView('toolbarItemsRegion', this.toolbarActions);
         this.showChildView('popupMenuRegion', this.popupMenu);
-        this.getRegion('popupMenuRegion').$el.hide();
+        this.getRegion('popupMenuRegion').el.setAttribute('displayNone', true);
     },
 
     __createActionsGroupsView() {
@@ -59,8 +59,8 @@ export default Marionette.View.extend({
         if (toolbarActions.length === 0) {
             return;
         }
-        const toolbarWidth = this.$el.width();
-        const menuActionsWidth = this.menuActionsWidth ? this.menuActionsWidth : this.menuActionsWidth = this.getRegion('popupMenuRegion').$el.width();
+        const toolbarWidth = this.el.offsetWidth;
+        const menuActionsWidth = this.menuActionsWidth ? this.menuActionsWidth : this.menuActionsWidth = this.getRegion('popupMenuRegion').el.offsetWidth;
         let childWidth = 0;
         let notFitItem = -1;
         toolbarActions.each((i, val) => {
@@ -77,11 +77,11 @@ export default Marionette.View.extend({
         });
 
         if (notFitItem >= 0) {
-            this.getRegion('popupMenuRegion').$el.show();
+            this.getRegion('popupMenuRegion').el.removeAttribute('displayNone');
             this.menuItemsCollection.reset(this.allItemsCollection.models.slice(notFitItem));
             this.toolbarItemsCollection.reset(this.allItemsCollection.models.slice(0, notFitItem));
         } else {
-            this.getRegion('popupMenuRegion').$el.hide();
+            this.getRegion('popupMenuRegion').el.setAttribute('displayNone', true);
         }
     },
 

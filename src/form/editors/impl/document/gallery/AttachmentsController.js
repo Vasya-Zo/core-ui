@@ -56,7 +56,7 @@ export default Marionette.Object.extend({
     },
 
     __togglePopupRegion(show) {
-        window.application.ui.popupRegion.toggleClass(classes.HIDDEN, !show);
+        window.application.ui.popupRegion.classList.toggle(classes.HIDDEN, !show);
     },
 
     __isImage(model) {

@@ -19,7 +19,7 @@ export default TextEditorView.extend({
     },
 
     setPlaceholder() {
-        this.ui.input.prop('placeholder', LocalizationService.get('CORE.FORM.EDITORS.DATE.EMPTYPLACEHOLDER'));
+        this.ui.input.setAttribute('placeholder', LocalizationService.get('CORE.FORM.EDITORS.DATE.EMPTYPLACEHOLDER'));
     },
 
     setValue(value) {
@@ -27,9 +27,9 @@ export default TextEditorView.extend({
             return;
         }
         const displayValue = DateTimeService.getDateDisplayValue(value, this.options.dateDisplayFormat);
-        this.ui.input.val(displayValue);
+        this.ui.input.value = displayValue;
         if (this.getOption('showTitle')) {
-            this.$el.prop('title', displayValue);
+            this.el.setAttribute('title', displayValue);
         }
     },
 

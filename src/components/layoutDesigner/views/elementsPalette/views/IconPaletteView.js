@@ -49,6 +49,6 @@ export default Marionette.CollectionView.extend({
         const draggableItemSuffix = componentModel.get('fieldType').toLowerCase();
         dragHelper.find('.js-drag-title').text(componentModel.get('name'));
         dragHelper.find('.js-drag-subtitle').text(componentModel.get('pathNames'));
-        dragHelper.addClass(draggableHelperClassNameSuffix + draggableItemSuffix);
+        dragHelper.classList.add(draggableHelperClassNameSuffix + draggableItemSuffix);
     }
 });

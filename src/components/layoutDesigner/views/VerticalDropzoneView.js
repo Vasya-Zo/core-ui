@@ -12,28 +12,28 @@ export default DropzoneView.extend({
     },
 
     getDistance(position) {
-        const elPosition = this.$el.offset();
+        const elPosition = this.el.offset();
 
-        if (position.y < elPosition.top || position.y > elPosition.top + this.$el.height()) {
+        if (position.y < elPosition.top || position.y > elPosition.top + this.el.offsetHeight) {
             return Number.MAX_VALUE;
         }
 
-        return Math.abs(position.x - (elPosition.left + this.$el.width() / 2));
+        return Math.abs(position.x - (elPosition.left + this.el.offsetWidth / 2));
     },
 
     activate() {
-        this.$el.addClass(classes.DROPZONE_ACTIVE);
+        this.el.classList.add(classes.DROPZONE_ACTIVE);
     },
 
     deactivate() {
-        this.$el.removeClass(classes.DROPZONE_ACTIVE);
+        this.el.classList.remove(classes.DROPZONE_ACTIVE);
     },
 
     enter() {
-        this.$el.addClass(classes.DROPZONE_HOVER);
+        this.el.classList.add(classes.DROPZONE_HOVER);
     },
 
     leave() {
-        this.$el.removeClass(classes.DROPZONE_HOVER);
+        this.el.classList.remove(classes.DROPZONE_HOVER);
     }
 });

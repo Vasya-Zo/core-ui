@@ -38,7 +38,7 @@ export default Marionette.View.extend({
     },
 
     __toggle() {
-        this.$el.toggleClass(this.classes.checked, this.model.selected);
+        this.el.classList.toggle(this.classes.checked, this.model.selected);
     },
 
     __changeModelSelected() {

@@ -8,7 +8,7 @@ export default function() {
         textAreaValue: 'Type a @mention to see suggestion...'
     });
 
-    const editor = new core.form.editors.MentionEditor({
+    const editor = new Core.form.editors.MentionEditor({
         model,
         key: 'textAreaValue',
         autocommit: true,
@@ -28,7 +28,7 @@ export default function() {
             ),
             templateContext() {
                 return {
-                    textAreaValue: core.utils.htmlHelpers.highlightMentions(this.model.get('textAreaValue'))
+                    textAreaValue: Core.utils.htmlHelpers.highlightMentions(this.model.get('textAreaValue'))
                 };
             },
             events: {

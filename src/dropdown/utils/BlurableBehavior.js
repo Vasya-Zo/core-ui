@@ -29,14 +29,14 @@ export default Marionette.Behavior.extend({
     },
 
     onRender() {
-        this.__getFocusableEl().attr('tabindex', -1);
+        this.__getFocusableEl().setAttribute('tabindex', -1);
     },
 
     __getFocusableEl() {
         if (this.options.selector) {
             return this.$(this.options.selector);
         }
-        return this.$el;
+        return this.el;
     },
 
     __focus(focusedEl) {

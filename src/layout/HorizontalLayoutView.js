@@ -40,7 +40,7 @@ export default Marionette.View.extend({
         this.columns.forEach(view => {
             view.on('change:visible', (activeView, visible) => this.__handleChangeVisibility(activeView, visible));
 
-            this.$el.append(view.render().$el);
+            this.el.append(view.render().$el);
             this.__columnsCtx.push({
                 view
             });
@@ -62,7 +62,7 @@ export default Marionette.View.extend({
     },
 
     __handleChangeVisibility(view, visible) {
-        view.$el.toggleClass(classes.HIDDEN, !visible);
+        view.$el.classList.toggle(classes.HIDDEN, !visible);
     },
 
     onDestroy() {

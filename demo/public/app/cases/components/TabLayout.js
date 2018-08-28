@@ -10,12 +10,12 @@ export default function() {
     });
 
     return new CanvasView({
-        view: new core.layout.TabLayout({
+        view: new Core.layout.TabLayout({
             tabs: [
                 {
                     id: 'tab1',
                     name: 'Tab 1',
-                    view: new core.layout.Form({
+                    view: new Core.layout.Form({
                         model,
                         schema: [
                             {
@@ -67,7 +67,7 @@ export default function() {
                 {
                     id: 'tab2',
                     name: 'Tab 2',
-                    view: new core.form.editors.MembersSplitEditor({
+                    view: new Core.form.editors.MembersSplitEditor({
                         key: 'title', //wrong key, expect [''] structure in title,
                         model,
                         autocommit: true,
@@ -80,7 +80,7 @@ export default function() {
                     id: 'tab3',
                     name: 'Tab 3',
                     enabled: false,
-                    view: new core.form.editors.TextAreaEditor({
+                    view: new Core.form.editors.TextAreaEditor({
                         value: 'Content 3'
                     })
                 },

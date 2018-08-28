@@ -46,10 +46,10 @@ export default Marionette.CompositeView.extend({
     },
 
     __updatePanelStyle() {
-        this.absolute ? this.$el.find('.js-children-container').css({ left: this.collapsed ? -250 : 0 }) : this.$el.width(this.collapsed ? 40 : 250);
+        this.absolute ? this.el.find('.js-children-container').css({ left: this.collapsed ? -250 : 0 }) : this.el.style.width = `${this.collapsed ? 40 : 250}px`;
     },
 
     __updateTitleStyle() {
-        this.collapsed ? this.ui.titleContainer.hide() : this.ui.titleContainer.show();
+        this.collapsed ? this.ui.titleContainer.hide() : this.ui.titleContainer.removeAttribute('displayNone');
     }
 });

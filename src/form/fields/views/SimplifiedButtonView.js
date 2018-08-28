@@ -52,10 +52,10 @@ export default Marionette.View.extend({
 
         this.showChildView('gridRegion', grid);
         if (showCounter) {
-            this.ui.counterRegion.show();
-            this.ui.counterRegionCounter.html(counterValue);
+            this.ui.counterRegion.removeAttribute('displayNone');
+            this.ui.counterRegionCounter.innerHTML = counterValue;
         } else {
-            this.ui.counterRegion.hide();
+            this.ui.counterRegion.setAttribute('displayNone', true);
         }
     },
 
@@ -123,10 +123,10 @@ export default Marionette.View.extend({
         }
         this.collection.reset(collectionValues);
         if (showCounter) {
-            this.ui.counterRegion.show();
-            this.ui.counterRegionCounter.html(counterValue);
+            this.ui.counterRegion.removeAttribute('displayNone');
+            this.ui.counterRegionCounter.innerHTML = counterValue;
         } else {
-            this.ui.counterRegion.hide();
+            this.ui.counterRegion.setAttribute('displayNone', true);
         }
     }
 });

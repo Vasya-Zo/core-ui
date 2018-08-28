@@ -3,7 +3,7 @@ import CanvasView from 'demoPage/views/CanvasView';
 const showInfo = function () {
     const description = 'Confirm your action';
 
-    core.ToastNotifications.add({
+    Core.ToastNotifications.add({
         text: description,
         title: 'Info'
     }, 'Info');
@@ -12,7 +12,7 @@ const showInfo = function () {
 const showSuccess = function () {
     const description = 'Message question';
 
-    core.ToastNotifications.add({
+    Core.ToastNotifications.add({
         text: description,
         title: 'Success'
     }, 'Success');
@@ -21,7 +21,7 @@ const showSuccess = function () {
 const showError = function () {
     const description = 'Error message';
 
-    core.ToastNotifications.add({
+    Core.ToastNotifications.add({
         text: description,
         title: 'Error'
     }, 'Error');

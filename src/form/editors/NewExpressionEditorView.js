@@ -131,7 +131,7 @@ export default (formRepository.editors.NewExpression = BaseLayoutEditorView.exte
         this.__showTypeEditor();
         this.__updateEditorState();
         if (this.options.displayInline) {
-            this.$el.addClass(classes.inline);
+            this.el.classList.add(classes.inline);
         }
     },
 
@@ -153,7 +153,7 @@ export default (formRepository.editors.NewExpression = BaseLayoutEditorView.exte
         });
 
         if (this.valueTypeCollection.length === 1) {
-            this.ui.type.hide();
+            this.ui.type.setAttribute('displayNone', true);
         }
         this.showChildView('typeContainer', this.typeEditor);
         this.typeEditor.setValue(this.value.type);
@@ -246,10 +246,10 @@ export default (formRepository.editors.NewExpression = BaseLayoutEditorView.exte
     },
 
     __updateEditorState() {
-        this.ui.value.toggleClass('hidden', this.value.type !== valueTypes.value);
-        this.ui.expression.toggleClass('hidden', this.value.type !== valueTypes.expression);
-        this.ui.script.toggleClass('hidden', this.value.type !== valueTypes.script);
-        this.ui.context.toggleClass('hidden', this.value.type !== valueTypes.context);
+        this.ui.value.classList.toggle('hidden', this.value.type !== valueTypes.value);
+        this.ui.expression.classList.toggle('hidden', this.value.type !== valueTypes.expression);
+        this.ui.script.classList.toggle('hidden', this.value.type !== valueTypes.script);
+        this.ui.context.classList.toggle('hidden', this.value.type !== valueTypes.context);
     },
 
     __updateEditorValue() {

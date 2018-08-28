@@ -151,7 +151,7 @@ export default (formRepository.editors.MembersSplit = BaseLayoutEditorView.exten
     },
 
     __updateText() {
-        this.ui.membersText.text(this.controller.getDisplayText());
+        this.ui.membersText.innerHTML = this.controller.getDisplayText();
     },
 
     __value(value, triggerChange) {

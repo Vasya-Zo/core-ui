@@ -47,7 +47,7 @@ export default Marionette.Behavior.extend({
     },
 
     __getAvailableWidth() {
-        return this.$el.width() - this.padding - 1; //Magic cross browser pixel, don't remove it
+        return this.el.offsetWidth - this.padding - 1; //Magic cross browser pixel, don't remove it
     },
 
     __handleClick(e) {
@@ -71,10 +71,10 @@ export default Marionette.Behavior.extend({
     },
 
     __handleSelection() {
-        this.$el.addClass('selected');
+        this.el.classList.add('selected');
     },
 
     __handleDeselection() {
-        this.$el.removeClass('selected');
+        this.el.classList.remove('selected');
     }
 });

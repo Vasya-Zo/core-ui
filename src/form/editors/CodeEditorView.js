@@ -83,17 +83,18 @@ export default formRepository.editors.Code = BaseLayoutEditorView.extend({
         });
 
         this.editor.on('change', this.__change, this);
-        this.editor.on('maximize', () => this.ui.fadingPanel.show());
+        this.editor.on('maximize', () => this.ui.fadingPanel.removeAttribute('displayNone'));
         this.editor.on('minimize', () => this.__onMinimize());
         this.showChildView('editorContainer', this.editor);
         this.editor.setValue(this.value || '');
-        this.ui.fadingPanel.hide();
+
+        this.ui.fadingPanel.setAttribute('displayNone', true);
         if (this.options.showMode === showModes.button) {
-            this.ui.editor.hide();
-            this.$el.addClass(classes.buttonMode);
+            this.ui.editor.setAttribute('displayNone', true);
+            this.el.classList.add(classes.buttonMode);
         } else {
-            this.ui.editBtn.hide();
-            this.ui.clearBtn.hide();
+            this.ui.editBtn.setAttribute('displayNone', true);
+            this.ui.clearBtn.setAttribute('displayNone', true);
         }
         this.__setEditBtnText();
     },
@@ -126,15 +127,15 @@ export default formRepository.editors.Code = BaseLayoutEditorView.extend({
     },
 
     __onEdit() {
-        this.ui.editor.show();
-        this.ui.fadingPanel.show();
+        this.ui.editor.removeAttribute('displayNone');;
+        this.ui.fadingPanel.removeAttribute('displayNone');;
         this.editor.maximize();
     },
 
     __onMinimize() {
-        this.ui.fadingPanel.hide();
+        this.ui.fadingPanel.setAttribute('displayNone', true);
         if (this.options.showMode === showModes.button) {
-            this.ui.editor.hide();
+            this.ui.editor.setAttribute('displayNone', true);
         }
     },
 
@@ -144,9 +145,9 @@ export default formRepository.editors.Code = BaseLayoutEditorView.extend({
 
     __setEditBtnText() {
         if (this.value) {
-            this.ui.editBtn.text(LocalizationService.get('CORE.FORM.EDITORS.CODE.EDIT'));
+            this.ui.editBtn.innerHtml = LocalizationService.get('CORE.FORM.EDITORS.CODE.EDIT');
         } else {
-            this.ui.editBtn.text(LocalizationService.get('CORE.FORM.EDITORS.CODE.EMPTY'));
+            this.ui.editBtn.innerHtml = LocalizationService.get('CORE.FORM.EDITORS.CODE.EMPTY');
         }
     },
 

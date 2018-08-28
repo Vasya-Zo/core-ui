@@ -95,7 +95,7 @@ export default () => {
     const collection = new Backbone.Collection(dataArray);
 
     // 3. Create grid
-    const gridController = new core.list.controllers.GridController({
+    const gridController = new Core.list.controllers.GridController({
         columns,
         selectableBehavior: 'multi',
         showToolbar: true,

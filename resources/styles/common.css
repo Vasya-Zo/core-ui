@@ -23,7 +23,11 @@
  @-ms-viewport {
    width: device-width;
  }
- 
+
+*[displayNone] {
+    display: none;
+}
+
  article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
    display: block;
  }

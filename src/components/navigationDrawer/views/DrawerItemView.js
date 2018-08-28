@@ -9,7 +9,7 @@ export default Marionette.View.extend({
     template: Handlebars.compile(template),
 
     onRender() {
-        this.$el.toggleClass(classes.selected, !!this.model.selected);
+        this.el.classList.toggle(classes.selected, !!this.model.selected);
     },
 
     className: 'navigationDrawer__li'

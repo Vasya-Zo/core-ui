@@ -149,7 +149,7 @@ export default Marionette.CompositeView.extend({
     },
 
     __onCollapsedChange(model, collapsed) {
-        this.ui.toggleCollapseButton.toggleClass(collapsedClass, collapsed);
+        this.ui.toggleCollapseButton.classList.toggle(collapsedClass, collapsed);
         return false;
     },
 
@@ -157,10 +157,10 @@ export default Marionette.CompositeView.extend({
         const index = this.model.collection.indexOf(this.model);
 
         if (index === 0) {
-            this.$el.prepend(this.renderNewColumnZone(this.model, 'left'));
+            this.el.prepend(this.renderNewColumnZone(this.model, 'left'));
         }
 
-        this.$el.append(this.renderNewColumnZone(this.model, 'right'));
+        this.el.append(this.renderNewColumnZone(this.model, 'right'));
     },
 
     __onDrop(context) {

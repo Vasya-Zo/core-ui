@@ -28,7 +28,7 @@ export default Marionette.CollectionView.extend({
     onRender() {
         const iconsProperty = this.options.iconsProperty;
         const itemSuffix = this.model.get(iconsProperty || 'fieldType').toLowerCase();
-        this.$el.addClass(paletteItemClassNameSuffix + itemSuffix);
+        this.el.classList.add(paletteItemClassNameSuffix + itemSuffix);
         this.ui.dragHandle.draggable({
             appendTo: '.js-module-region',
             helper: () => itemDragHelper,
@@ -83,6 +83,6 @@ export default Marionette.CollectionView.extend({
         const draggableItemSuffix = componentModel.get('fieldType').toLowerCase();
         dragHelper.find('.js-drag-title').text(componentModel.get('name'));
         dragHelper.find('.js-drag-subtitle').text(componentModel.get('pathNames'));
-        dragHelper.addClass(paletteItemClassNameSuffix + draggableItemSuffix);
+        dragHelper.classList.add(paletteItemClassNameSuffix + draggableItemSuffix);
     }
 });

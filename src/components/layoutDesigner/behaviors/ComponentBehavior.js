@@ -43,16 +43,16 @@ export default Marionette.Behavior.extend({
     },
 
     highlightComponent() {
-        this.$el.toggleClass(classes.ERROR);
+        this.el.classList.toggle(classes.ERROR);
     },
 
     onRender() {
         this.__updateSelection();
         if (this.options.draggable) {
-            this.$el.draggable({
+            this.el.draggable({
                 appendTo: '.js-module-region',
                 helper() {
-                    return this.$el.hasClass('js-system-container') && this.$el.parentElement.hasClass('js-form-region') ? $(emptyDragHelper) : $(componentDragHelper);
+                    return this.el.hasClass('js-system-container') && this.el.parentElement.hasClass('js-form-region') ? $(emptyDragHelper) : $(componentDragHelper);
                 },
                 cursorAt: {
                     top: -45,
@@ -71,9 +71,9 @@ export default Marionette.Behavior.extend({
 
     __updateHover() {
         if (this.view.model.hovered) {
-            this.$el.addClass(classes.HOVERED);
+            this.el.classList.add(classes.HOVERED);
         } else {
-            this.$el.removeClass(classes.HOVERED);
+            this.el.classList.remove(classes.HOVERED);
         }
     },
 
@@ -84,9 +84,9 @@ export default Marionette.Behavior.extend({
 
     __updateSelection() {
         if (this.view.model.selected) {
-            this.$el.addClass(classes.SELECTED);
+            this.el.classList.add(classes.SELECTED);
         } else {
-            this.$el.removeClass(classes.SELECTED);
+            this.el.classList.remove(classes.SELECTED);
         }
     },
 
@@ -112,14 +112,14 @@ export default Marionette.Behavior.extend({
 
     __updateErrorSelection() {
         if (this.view.model.get('error')) {
-            this.$el.addClass(classes.ERROR);
+            this.el.classList.add(classes.ERROR);
         } else {
-            this.$el.removeClass(classes.ERROR);
+            this.el.classList.remove(classes.ERROR);
         }
     },
 
     __isOver() {
-        return this.$el.is(':hover');
+        return this.el.is(':hover');
     },
 
     __updateCollapsed(model, collapsed, options) {
@@ -133,9 +133,9 @@ export default Marionette.Behavior.extend({
 
     __updateValidity() {
         if (this.view.model.get('invalid')) {
-            this.$el.addClass(classes.INVALID);
+            this.el.classList.add(classes.INVALID);
         } else {
-            this.$el.removeClass(classes.INVALID);
+            this.el.classList.remove(classes.INVALID);
         }
     }
 });

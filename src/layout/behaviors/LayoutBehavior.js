@@ -14,7 +14,7 @@ export default Marionette.Behavior.extend({
         const nextState = this.__computeViewState();
 
         if (this.__state.visible !== nextState.visible) {
-            this.$el.toggleClass(classes.HIDDEN, !nextState.visible);
+            this.el.classList.toggle(classes.HIDDEN, !nextState.visible);
             this.view.trigger('change:visible', this.view, nextState.visible);
         }
         this.__state = nextState;

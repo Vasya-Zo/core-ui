@@ -25,10 +25,10 @@ export default Marionette.Behavior.extend({
         if (this.options.anchor) {
             $el = this.$(this.options.anchor);
         } else {
-            $el = this.$el;
+            $el = this.el;
         }
         if (!this.options.omitDefaultStyling) {
-            $el.addClass(classes.ANCHOR);
+            $el.classList.add(classes.ANCHOR);
         }
         this.view.$anchor = $el;
     }

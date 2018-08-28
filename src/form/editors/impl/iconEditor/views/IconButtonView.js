@@ -16,6 +16,6 @@ export default Marionette.View.extend({
     className: 'editor_icons',
 
     __setIconColor() {
-        this.$el.css({ color: this.model.get('color') });
+        this.el.css({ color: this.model.get('color') });
     }
 });

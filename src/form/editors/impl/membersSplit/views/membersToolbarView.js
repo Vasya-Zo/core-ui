@@ -53,37 +53,37 @@ export default Marionette.View.extend({
 
     __filterAll() {
         if (this.ui.allButton.hasClass(this.classes.active)) return;
-        this.ui.filterButtons.removeClass(this.classes.active);
-        this.ui.allButton.addClass(this.classes.active);
-        this.ui.filterLink.removeClass(this.classes.activeLink);
-        this.ui.allLink.addClass(this.classes.activeLink);
+        this.ui.filterButtons.classList.remove(this.classes.active);
+        this.ui.allButton.classList.add(this.classes.active);
+        this.ui.filterLink.classList.remove(this.classes.activeLink);
+        this.ui.allLink.classList.add(this.classes.activeLink);
         this.trigger('select', '');
     },
 
     __filterUsers() {
         if (this.ui.usersButton.hasClass(this.classes.active)) return;
-        this.ui.filterButtons.removeClass(this.classes.active);
-        this.ui.usersButton.addClass(this.classes.active);
-        this.ui.filterLink.removeClass(this.classes.activeLink);
-        this.ui.usersLink.addClass(this.classes.activeLink);
+        this.ui.filterButtons.classList.remove(this.classes.active);
+        this.ui.usersButton.classList.add(this.classes.active);
+        this.ui.filterLink.classList.remove(this.classes.activeLink);
+        this.ui.usersLink.classList.add(this.classes.activeLink);
         this.trigger('select', 'users');
     },
 
     __filterGroups() {
         if (this.ui.groupsButton.hasClass(this.classes.active)) return;
-        this.ui.filterButtons.removeClass(this.classes.active);
-        this.ui.groupsButton.addClass(this.classes.active);
-        this.ui.filterLink.removeClass(this.classes.activeLink);
-        this.ui.groupsLink.addClass(this.classes.activeLink);
+        this.ui.filterButtons.classList.remove(this.classes.active);
+        this.ui.groupsButton.classList.add(this.classes.active);
+        this.ui.filterLink.classList.remove(this.classes.activeLink);
+        this.ui.groupsLink.classList.add(this.classes.activeLink);
         this.trigger('select', 'groups');
     },
 
     __filterResources() {
         if (this.ui.resourcesButton.hasClass(this.classes.active)) return;
-        this.ui.filterButtons.removeClass(this.classes.active);
-        this.ui.resourcesButton.addClass(this.classes.active);
-        this.ui.filterLink.removeClass(this.classes.activeLink);
-        this.ui.resourcesLink.addClass(this.classes.activeLink);
+        this.ui.filterButtons.classList.remove(this.classes.active);
+        this.ui.resourcesButton.classList.add(this.classes.active);
+        this.ui.filterLink.classList.remove(this.classes.activeLink);
+        this.ui.resourcesLink.classList.add(this.classes.activeLink);
         this.trigger('select', 'resources');
     }
 });

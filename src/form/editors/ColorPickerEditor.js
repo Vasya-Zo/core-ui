@@ -76,7 +76,7 @@ export default (formRepository.editors.ColorPicker = BaseItemEditorView.extend({
         if (this.getEnabled() && this.getReadonly()) {
             this.ui.colorpicker.spectrum('disable');
         }
-        this.ui.hexcolor.prop('readonly', readonly);
+        this.ui.hexcolor.setAttribute('readonly', readonly);
     },
 
     __setEnabled(enabled) {
@@ -91,7 +91,7 @@ export default (formRepository.editors.ColorPicker = BaseItemEditorView.extend({
         this.value = value;
 
         if (this.getOption('showTitle')) {
-            this.ui.input.prop('title', value);
+            this.ui.input.setAttribute('title', value);
         }
 
         if (triggerChange) {

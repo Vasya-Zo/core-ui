@@ -13,7 +13,7 @@ export default function() {
     });
 
     return new CanvasView({
-        view: new core.form.editors.DocumentEditor({
+        view: new Core.form.editors.DocumentEditor({
             model,
             key: 'value',
             autocommit: true

@@ -44,7 +44,7 @@ export default Marionette.View.extend({
         }
 
         if (this.getOption('isEditor')) {
-            const editorModeView = new core.form.editors.RadioGroupEditor({
+            const editorModeView = new Core.form.editors.RadioGroupEditor({
                 value: 'none',
                 radioOptions: [
                     {
@@ -68,7 +68,7 @@ export default Marionette.View.extend({
             this.showChildView('editorModeRegion', editorModeView);
             this.listenTo(editorModeView, 'change', this.updateEditorModel);
         } else {
-            this.ui.editorRegion.addClass('canvas-wrap');
+            this.ui.editorRegion.classList.add('canvas-wrap');
         }
     },
 
@@ -102,6 +102,6 @@ export default Marionette.View.extend({
 
     __toggleCollapse() {
         this.collapsed = !this.collapsed;
-        this.$el.width(this.collapsed ? 40 : 250);
+        this.el.width(this.collapsed ? 40 : 250);
     }
 });

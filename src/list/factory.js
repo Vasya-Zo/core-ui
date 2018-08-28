@@ -4,7 +4,6 @@ import ListView from './views/CollectionView';
 import EmptyListView from './views/EmptyListView';
 import EmptyGridView from './views/EmptyGridView';
 import GridView from './views/GridView';
-import GridColumnHeaderView from './views/GridColumnHeaderView';
 
 export const getDefaultComparator = (columns = []) => {
     const sortingColumn = columns.find(column => column.sorting);
@@ -125,7 +124,6 @@ const factory = {
                 headerView: options.headerView,
                 childView: options.childView,
                 childViewSelector: options.childViewSelector,
-                gridColumnHeaderView: GridColumnHeaderView,
                 emptyView: EmptyGridView,
                 emptyViewOptions: {
                     text: Localizer.get('CORE.GRID.EMPTYVIEW.EMPTY')

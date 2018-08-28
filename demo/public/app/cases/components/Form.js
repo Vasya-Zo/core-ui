@@ -63,7 +63,7 @@ export default function () {
 
         behaviors: {
             BackboneFormBehavior: {
-                behaviorClass: core.form.behaviors.BackboneFormBehavior,
+                behaviorClass: Core.form.behaviors.BackboneFormBehavior,
                 schema() {
                     return {
                         name: {

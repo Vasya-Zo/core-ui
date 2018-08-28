@@ -21,7 +21,7 @@ export default Marionette.View.extend({
     },
 
     onUnhighlighted() {
-        this.ui.name.text(this.model.get('name'));
+        this.ui.name.innerHTML = this.model.get('name');
     },
 
     template: Handlebars.compile(template)

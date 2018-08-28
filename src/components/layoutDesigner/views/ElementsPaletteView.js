@@ -66,7 +66,7 @@ export default Marionette.View.extend({
         if (this.elementsView) {
             this.showChildView('elementsRegion', this.elementsView);
         }
-        this.ui.toggleButton.hide(); //hide feature
+        this.ui.toggleButton.setAttribute('displayNone', true); //hide feature
     },
 
     updatePalette(model, newCollection) {
@@ -79,7 +79,7 @@ export default Marionette.View.extend({
 
     __togglePalette() {
         this.trigger('toggle:palette');
-        this.ui.toggleButton.toggleClass('dev-button-rotated');
+        this.ui.toggleButton.classList.toggle('dev-button-rotated');
     },
 
     __createContextView(options) {

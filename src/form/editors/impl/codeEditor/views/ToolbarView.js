@@ -32,22 +32,22 @@ export default Marionette.View.extend({
 
     onRender() {
         if (this.options.editor.options.mode === 'expression') {
-            this.ui.compile.css('display', 'none');
+            this.ui.compile.style.display = 'none';
         }
     },
 
     onAttach() {
-        this.ui.minimize.hide();
+        this.ui.minimize.setAttribute('displayNone', true);
     },
 
     maximize() {
-        this.ui.maximize.hide();
-        this.ui.minimize.show();
+        this.ui.maximize.setAttribute('displayNone', true);
+        this.ui.minimize.removeAttribute('displayNone');;
     },
 
     minimize() {
-        this.ui.maximize.show();
-        this.ui.minimize.hide();
+        this.ui.maximize.removeAttribute('displayNone');;
+        this.ui.minimize.setAttribute('displayNone', true);
     },
 
     __onMaximize() {

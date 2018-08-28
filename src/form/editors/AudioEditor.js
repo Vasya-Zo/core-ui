@@ -34,7 +34,7 @@ export default (formRepository.editors.AudioEditor = BaseLayoutEditorView.extend
         let recorder = {};
         const regionEl = document.createElement('div');
         regionEl.className = 'js-button-region';
-        this.$el.parent().append(regionEl);
+        this.el.parentElement.append(regionEl);
         const region = this.addRegion('js-button-region', {
             el: regionEl
         });

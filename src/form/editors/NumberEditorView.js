@@ -81,7 +81,7 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
     onAttach() {
         if (this.options.format) {
             this.maskedInputController = maskInput({
-                inputElement: this.ui.input[0],
+                inputElement: this.ui.input,
                 mask: this.numberMask
             });
         }
@@ -92,7 +92,7 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
     },
 
     __keyup() {
-        const value = this.ui.input.val();
+        const value = this.ui.input.value;
         if (value === `-${this.decimalSymbol}`) {
             return;
         }
@@ -107,12 +107,12 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
         const input = this.ui.input;
         const max = input[0].getAttribute('max');
         const min = input[0].getAttribute('min');
-        const value = this.__checkMaxMinValue(input.val(), max, min);
+        const value = this.__checkMaxMinValue(input.value, max, min);
         this.__value(value, false, true, false);
         if (this.options.format) {
             this.maskedInputController && this.maskedInputController.textMaskInputElement.update(value);
         } else {
-            this.ui.input.val(value);
+            this.ui.input.value = value;
         }
     },
 
@@ -141,14 +141,14 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
     __setEnabled(enabled) {
         BaseItemEditorView.prototype.__setEnabled.call(this, enabled);
-        this.ui.input.prop('disabled', !enabled);
+        this.ui.input.setAttribute('disabled', !enabled);
     },
 
     __setReadonly(readonly) {
         BaseItemEditorView.prototype.__setReadonly.call(this, readonly);
         if (this.getEnabled()) {
-            this.ui.input.prop('readonly', readonly);
-            this.ui.input.prop('tabindex', readonly ? -1 : 0);
+            this.ui.input.setAttribute('readonly', readonly);
+            this.ui.input.setAttribute('tabindex', readonly ? -1 : 0);
         }
     },
 
@@ -182,11 +182,11 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
 
         this.value = value;
         if (this.options.showTitle) {
-            this.$el.prop('title', value);
+            this.el.setAttribute('title', value);
         }
 
-        if (!this.options.format || this.ui.input.val() === '' || value === null) {
-            this.ui.input.val(value);
+        if (!this.options.format || this.ui.input.value === '' || value === null) {
+            this.ui.input.value = value;
         }
 
         if (triggerChange) {
@@ -218,9 +218,9 @@ export default (formRepository.editors.Number = BaseItemEditorView.extend({
     },
 
     __setInputOptions() {
-        this.ui.input[0].setAttribute('min', this.options.min);
-        this.ui.input[0].setAttribute('max', this.options.max);
-        this.ui.input[0].setAttribute('step', this.options.step);
+        this.ui.input.setAttribute('min', this.options.min);
+        this.ui.input.setAttribute('max', this.options.max);
+        this.ui.input.setAttribute('step', this.options.step);
     },
 
     __parseToNumber(string) {

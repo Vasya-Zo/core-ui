@@ -9,10 +9,10 @@ export default Marionette.View.extend({
     template: false,
 
     onRender() {
-        this.$el.text(this.model.get(this.options.textAttribute));
+        this.el.innerHtml = this.model.get(this.options.textAttribute);
     },
 
     onChangeText() {
-        this.$el.text(this.model.get(this.options.textAttribute));
+        this.el.textinnerHtml = this.model.get(this.options.textAttribute);
     }
 });

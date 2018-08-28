@@ -74,11 +74,11 @@ export default NewExpressionEditorView.extend({
     },
 
     __updateEditorState() {
-        this.ui.value.toggleClass('hidden', this.value.type !== valueTypes.value);
-        this.ui.expression.toggleClass('hidden', this.value.type !== valueTypes.expression);
-        this.ui.script.toggleClass('hidden', this.value.type !== valueTypes.script);
-        this.ui.context.toggleClass('hidden', this.value.type !== valueTypes.context);
-        this.ui.template.toggleClass('hidden', this.value.type !== valueTypes.template);
+        this.ui.value.classList.toggle('hidden', this.value.type !== valueTypes.value);
+        this.ui.expression.classList.toggle('hidden', this.value.type !== valueTypes.expression);
+        this.ui.script.classList.toggle('hidden', this.value.type !== valueTypes.script);
+        this.ui.context.classList.toggle('hidden', this.value.type !== valueTypes.context);
+        this.ui.template.classList.toggle('hidden', this.value.type !== valueTypes.template);
     },
 
     __updateEditorValue() {

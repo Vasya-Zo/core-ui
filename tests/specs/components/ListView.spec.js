@@ -59,8 +59,8 @@ describe('Components', () => {
             listView.on('attach', () => {
                 expect(listView.collection.visibleLength).toBe(60, 'Visible models: items on page + buffer');
                 expect(listView.$el.height()).toBe(250000);
-                expect(listView.$el.parent().height()).toBe(1000);
-                listView.$el.parent().on('scroll', () => {
+                expect(listView.$el.parentElement.height()).toBe(1000);
+                listView.$el.parentElement.on('scroll', () => {
                     expect(listView.collection.visibleLength).toBe(60);
                     expect(listView.state.position).toBe(30, 'Scroll - half of the buffer');
                     expect(
@@ -70,9 +70,9 @@ describe('Components', () => {
                             .css('top')
                     ).toBe('750px');
                     done();
-                    listView.$el.parent().off('scroll');
+                    listView.$el.parentElement.off('scroll');
                 });
-                listView.$el.parent().scrollTop(1000);
+                listView.$el.parentElement.scrollTop(1000);
             });
 
             window.app

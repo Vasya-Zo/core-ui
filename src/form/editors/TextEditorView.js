@@ -93,14 +93,14 @@ export default (formRepository.editors.Text = BaseItemEditorView.extend({
 
     __keyup() {
         if (this.options.changeMode === changeMode.keydown) {
-            this.__value(this.ui.input.val(), false, true);
+            this.__value(this.ui.input.value, false, true);
         }
 
         this.trigger('keyup', this);
     },
 
     __change() {
-        this.__value(this.ui.input.val(), false, true);
+        this.__value(this.ui.input.value, false, true);
     },
 
     __clear() {
@@ -125,27 +125,27 @@ export default (formRepository.editors.Text = BaseItemEditorView.extend({
             this.placeholder = this.options.emptyPlaceholder;
         }
 
-        this.ui.input.prop('placeholder', this.placeholder);
+        this.ui.input.setAttribute('placeholder', this.placeholder);
     },
 
     __setEnabled(enabled) {
         BaseItemEditorView.prototype.__setEnabled.call(this, enabled);
-        this.ui.input.prop('disabled', !enabled);
+        this.ui.input.setAttribute('disabled', !enabled);
     },
 
     __setReadonly(readonly) {
         BaseItemEditorView.prototype.__setReadonly.call(this, readonly);
         if (this.getEnabled()) {
-            this.ui.input.prop('readonly', readonly);
-            this.ui.input.prop('tabindex', readonly ? -1 : 0);
+            this.ui.input.setAttribute('readonly', readonly);
+            this.ui.input.setAttribute('tabindex', readonly ? -1 : 0);
         }
     },
 
     onRender() {
         const value = this.getValue() || '';
-        this.ui.input.val(value);
+        this.ui.input.value = value;
         if (this.options.showTitle) {
-            this.ui.input.prop('title', value);
+            this.ui.input.setAttribute('title', value);
         }
     },
 
@@ -156,10 +156,10 @@ export default (formRepository.editors.Text = BaseItemEditorView.extend({
         this.value = value;
 
         if (this.getOption('showTitle')) {
-            this.ui.input.prop('title', value);
+            this.ui.input.setAttribute('title', value);
         }
         if (updateUi) {
-            this.ui.input.val(value);
+            this.ui.input.value = value;
         }
         if (triggerChange) {
             this.__triggerChange();

@@ -82,16 +82,16 @@ export default (formRepository.editors.TextArea = BaseItemEditorView.extend({
 
     onRender() {
         const value = this.getValue() || '';
-        this.ui.textarea.val(value);
+        this.ui.textarea.value = value;
         if (this.options.showTitle) {
-            this.$el.prop('title', value);
+            this.el.setAttribute('title', value);
         }
         switch (this.options.size) {
             case size.auto:
-                this.ui.textarea.attr('rows', this.options.minHeight);
+                this.ui.textarea.setAttribute('rows', this.options.minHeight);
                 break;
             case size.fixed:
-                this.ui.textarea.attr('rows', this.options.height);
+                this.ui.textarea.setAttribute('rows', this.options.height);
                 break;
             default:
                 helpers.throwArgumentError('Invalid `size parameter`.');
@@ -120,21 +120,21 @@ export default (formRepository.editors.TextArea = BaseItemEditorView.extend({
             this.placeholder = this.options.emptyPlaceholder;
         }
 
-        this.ui.textarea.prop('placeholder', this.placeholder);
+        this.ui.textarea.setAttribute('placeholder', this.placeholder);
     },
 
     __setEnabled(enabled) {
         //noinspection Eslint
         BaseItemEditorView.prototype.__setEnabled.call(this, enabled);
-        this.ui.textarea.prop('disabled', !enabled);
+        this.ui.textarea.setAttribute('disabled', !enabled);
     },
 
     __setReadonly(readonly) {
         //noinspection Eslint
         BaseItemEditorView.prototype.__setReadonly.call(this, readonly);
         if (this.getEnabled()) {
-            this.ui.textarea.prop('readonly', readonly);
-            this.ui.textarea.prop('tabindex', readonly ? -1 : 0);
+            this.ui.textarea.setAttribute('readonly', readonly);
+            this.ui.textarea.setAttribute('tabindex', readonly ? -1 : 0);
         }
     },
 
@@ -145,10 +145,10 @@ export default (formRepository.editors.TextArea = BaseItemEditorView.extend({
         this.value = value;
 
         if (this.options.showTitle) {
-            this.$el.prop('title', value);
+            this.el.setAttribute('title', value);
         }
         if (updateUi) {
-            this.ui.textarea.val(value);
+            this.ui.textarea.value = value;
         }
         if (triggerChange) {
             this.__triggerChange();

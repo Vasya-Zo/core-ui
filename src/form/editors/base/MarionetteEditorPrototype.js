@@ -24,13 +24,13 @@ const onRender = function() {
     this.setHidden(this.hidden);
     this.setValue(this.value);
     if (this.focusElement) {
-        this.$el.on('focus', this.focusElement, this.onFocus);
-        this.$el.on('blur', this.focusElement, this.onBlur);
-        this.$el.on('keyup', this.focusElement, this.onKeyup);
+        this.el.querySelector(this.focusElement).addEventListener('focus', this.onFocus);
+        this.el.querySelector(this.focusElement).addEventListener('blur', this.onBlur);
+        this.el.querySelector(this.focusElement).addEventListener('keyup', this.onKeyup);
     } else if (this.focusElement !== null) {
-        this.$el.on('focus', this.onFocus);
-        this.$el.on('blur', this.onBlur);
-        this.$el.on('keyup', this.onKeyup);
+        this.el.addEventListener('focus', this.onFocus);
+        this.el.addEventListener('blur', this.onBlur);
+        this.el.addEventListener('keyup', this.onKeyup);
     }
     this.__updateEmpty();
 };
@@ -129,7 +129,7 @@ export default {
                 this.on('change', onChange.bind(this));
                 this.setValue = _.wrap(this.setValue, (fn, ...rest) => {
                     fn.call(this, ...rest);
-                    if (this.$el) {
+                    if (this.el) {
                         this.__updateEmpty();
                     }
                 });
@@ -149,7 +149,7 @@ export default {
             },
 
             __updateEmpty() {
-                this.$el.toggleClass(classes.EMPTY, this.isEmptyValue());
+                this.el.classList.toggle(classes.EMPTY, this.isEmptyValue());
             },
 
             /**
@@ -170,9 +170,9 @@ export default {
 
             __getFocusElement() {
                 if (this.focusElement) {
-                    return this.$el.find(this.focusElement);
+                    return this.el.querySelector(this.focusElement);
                 }
-                return this.$el;
+                return this.el;
             },
 
             __triggerChange(...args: Array<any>) {
@@ -225,16 +225,16 @@ export default {
              */
             setHidden(hidden: Boolean) {
                 this.hidden = hidden;
-                this.$el.toggleClass(classes.hidden, hidden);
+                this.el.classList.toggle(classes.hidden, hidden);
             },
 
             __setEnabled(enabled: Boolean) {
                 this.enabled = enabled;
                 this.trigger('enabled', enabled);
                 if (!this.enabled) {
-                    this.$el.addClass(classes.disabled);
+                    this.el.classList.add(classes.disabled);
                 } else {
-                    this.$el.removeClass(classes.disabled);
+                    this.el.classList.remove(classes.disabled);
                 }
             },
 
@@ -258,9 +258,9 @@ export default {
                 this.readonly = readonly;
                 this.trigger('readonly', readonly);
                 if (this.readonly && this.getEnabled()) {
-                    this.$el.addClass(classes.readonly);
+                    this.el.classList.add(classes.readonly);
                 } else {
-                    this.$el.removeClass(classes.readonly);
+                    this.el.classList.remove(classes.readonly);
                 }
             },
 
@@ -406,13 +406,13 @@ export default {
             },
 
             onFocus() {
-                this.$el.addClass(classes.FOCUSED);
+                this.el.classList.add(classes.FOCUSED);
                 this.trigger('focus', this);
             },
 
             onBlur() {
                 this.checkChange();
-                this.$el.removeClass(classes.FOCUSED);
+                this.el.classList.remove(classes.FOCUSED);
                 this.trigger('blur', this);
             }
         };

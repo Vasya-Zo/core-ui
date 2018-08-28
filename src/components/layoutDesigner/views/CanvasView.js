@@ -35,13 +35,13 @@ export default Marionette.View.extend({
         emptyViewMaskRegion.show(this.__createEmptyViewMask());
 
         if (this.getOption('config').hideEmptyView) {
-            emptyViewMaskRegion.$el.hide();
+            emptyViewMaskRegion.el.setAttribute('displayNone', true);
         }
     },
 
     toggleMask(isShowed) {
         if (!this.getOption('config').hideEmptyView) {
-            this.getRegion('emptyViewMaskRegion').$el.toggle(!isShowed);
+            this.getRegion('emptyViewMaskRegion').el.toggle(!isShowed);
         }
     },
 

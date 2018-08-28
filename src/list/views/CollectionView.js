@@ -93,7 +93,6 @@ export default Marionette.CompositeView.extend({
         this.debouncedHandleResize = _.debounce(() => this.handleResize(), 100);
         this.listenTo(GlobalEventService, 'window:resize', this.debouncedHandleResize);
         this.listenTo(this.collection.parentCollection, 'add remove reset ', this.debouncedHandleResize);
-        // this.on('render', this.__onRender);
     },
 
     attributes() {
@@ -122,7 +121,7 @@ export default Marionette.CompositeView.extend({
             htmlHelpers.forbidSelection(this.el);
         }
         this.listenTo(this.collection, 'update:child', model => this.__updateChildTop(this.children.findByModel(model)));
-        this.$el.parent().on('scroll', this.__onScroll.bind(this));
+        this.el.parentElement.addEventListener('scroll', this.__onScroll.bind(this));
     },
 
     _showCollection() {
@@ -330,7 +329,7 @@ export default Marionette.CompositeView.extend({
             return;
         }
 
-        const newPosition = Math.max(0, Math.floor(this.$el.parent().scrollTop() / this.childHeight));
+        const newPosition = Math.max(0, Math.floor(this.el.parentElement.scrollTop() / this.childHeight));
         this.__updatePositionInternal(newPosition, false);
         this.__updateTop();
     },
@@ -363,7 +362,7 @@ export default Marionette.CompositeView.extend({
                 Math.max(0, newPosition > (this.collection.length - config.VISIBLE_COLLECTION_RESERVE) / 2 ? newPosition + config.VISIBLE_COLLECTION_RESERVE : newPosition) *
                 this.childHeight;
             if (this.el.parentNode) {
-                this.$el.parent().scrollTop(scrollTop);
+                this.el.parentElement.scrollTop(scrollTop);
             }
             this.__updateTop();
             _.delay(() => (this.internalScroll = false), 100);
@@ -401,7 +400,7 @@ export default Marionette.CompositeView.extend({
         const allItemsHeight = (this.state.allItemsHeight = this.childHeight * this.collection.length);
 
         if (allItemsHeight !== oldAllItemsHeight) {
-            this.$el.height(allItemsHeight || '');
+            this.el.style.height = `${(allItemsHeight || '')}px`;
             if (this.gridEventAggregator) {
                 this.gridEventAggregator.trigger('update:height', allItemsHeight);
             } else {
@@ -420,7 +419,7 @@ export default Marionette.CompositeView.extend({
     __updatePadding() {
         if (this.el.scrollHeight > this.el.offsetHeight) {
             const scrollBarWidth = this.el.offsetWidth - this.el.clientWidth;
-            this.$el.css({
+            this.el.css({
                 width: `calc(100% + ${scrollBarWidth}px)`,
                 paddingRight: scrollBarWidth
             });
@@ -449,7 +448,7 @@ export default Marionette.CompositeView.extend({
             let outerBoxAdjustments = 0;
 
             if (this.isEmpty()) {
-                minHeight = this.$el.find('.empty-view').height();
+                minHeight = this.el.find('.empty-view').height();
             }
 
             outerBoxAdjustments = this.ui.visibleCollection.outerHeight() % this.childHeight;

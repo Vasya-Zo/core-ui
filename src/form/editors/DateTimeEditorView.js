@@ -43,12 +43,7 @@ export default (formRepository.editors.DateTime = BaseLayoutEditorView.extend({
         this.readonly = this.getReadonly();
     },
 
-    ui: {
-        clearButton: '.js-clear-button'
-    },
-
     events: {
-        'click @ui.clearButton': '__onClear',
         mouseenter: '__onMouseenter',
         mouseleave: '__onMouseleave'
     },
@@ -91,7 +86,6 @@ export default (formRepository.editors.DateTime = BaseLayoutEditorView.extend({
     },
 
     onRender(): void {
-        this.__updateClearButton();
         if (this.options.showTitle) {
             this.__updateTitle();
         }
@@ -103,17 +97,10 @@ export default (formRepository.editors.DateTime = BaseLayoutEditorView.extend({
         if (this.options.showDate !== false) {
             this.__createDateDropdownEditor();
             //calendar button readonly as don't develop mask validation
-            this.calendarDropdownView.button.ui.input
-                .prop('readonly', true)
-                .prop('tabindex', true ? -1 : 0);
-        }
-    },
+            const input = this.calendarDropdownView.button.ui.input;
 
-    __updateClearButton(): void {
-        if (!this.options.allowEmptyValue || !this.getValue()) {
-            this.ui.clearButton.hide();
-        } else {
-            this.ui.clearButton.show();
+            input.setAttribute('readonly', true);
+            input.setAttribute('tabindex', -1);
         }
     },
 
@@ -185,7 +172,7 @@ export default (formRepository.editors.DateTime = BaseLayoutEditorView.extend({
         const dateDisplayValue = DateTimeService.getDateDisplayValue(this.getValue(), this.options.dateDisplayFormat);
         const timeDisplayValue = DateTimeService.getTimeDisplayValue(this.getValue(), this.options.timeDisplayFormat);
         const resultValue = `${dateDisplayValue} ${timeDisplayValue}`;
-        this.$el.prop('title', resultValue);
+        this.el.setAttribute('title', resultValue);
     },
 
     __onMouseenter() {

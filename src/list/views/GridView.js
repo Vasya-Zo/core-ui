@@ -178,19 +178,20 @@ export default Marionette.View.extend({
         }
 
         this.listenTo(this.listView, 'all', (eventName, eventArguments) => {
+            //TODO WFT
             if (eventName.startsWith('childview')) {
                 this.trigger.apply(this, [eventName].concat(eventArguments));
             }
         });
 
-        if (this.collection.length) {
-            //this.__presortCollection(options.columns); TODO WFT
-        }
+        //if (this.collection.length) {
+        //this.__presortCollection(options.columns); TODO WFT
+        //}
         this.collection = options.collection;
 
         if (options.showToolbar) {
             this.toolbarView = new ToolbarView({
-                allItemsCollection: options.actions || new Backbone.Collection()
+                allItemsCollection: options.actions || new Backbone.Collection() //TODO WFT
             });
             this.listenTo(this.toolbarView, 'command:execute', this.__executeAction);
         }
@@ -203,8 +204,8 @@ export default Marionette.View.extend({
     __onCursorMove(delta) {
         const currentSelectedIndex = this.editableCellsIndexes.indexOf(this.pointedCell);
         const newPosition = Math.min(this.editableCellsIndexes.length - 1, Math.max(0, currentSelectedIndex + delta));
-        const newSelectedIndex = this.editableCellsIndexes[newPosition];
-        this.pointedCell = newSelectedIndex;
+
+        this.pointedCell = this.editableCellsIndexes[newPosition];
         const pointed = this.collection.find(model => model.cid === this.collection.cursorCid);
         if (pointed) {
             pointed.trigger('select:pointed', this.pointedCell);
@@ -282,13 +283,13 @@ export default Marionette.View.extend({
             this.showChildView('searchRegion', this.searchView);
         }
         if (!(this.options.showToolbar || this.options.showSearch)) {
-            this.ui.tools.hide();
+            this.ui.tools.style.display = 'none';
         }
 
         if (this.getOption('title')) {
-            this.ui.title.text(this.getOption('title') || '');
-        } else {
-            this.ui.title.hide();
+            this.ui.title.innerHTML = this.getOption('title') || '';
+        } else if (this.ui.title) {
+            this.ui.title.style.display = 'none';
         }
         this.updatePosition = this.listView.updatePosition.bind(this.listView.collectionView);
     },
@@ -300,15 +301,12 @@ export default Marionette.View.extend({
         this.options.columns.forEach((column, i) => {
             this.__setColumnWidth(i, column.width);
         });
-        document.body && document.body.appendChild(this.styleSheet);
+        document.body && document.body.appendChild(this.styleSheet); //TODO better method for width
         this.__bindListRegionScroll();
         if (this.options.showSearch) {
             this.searchView.focus();
         }
-        this.ui.content.css('maxHeight', window.innerHeight);
-        // if (this.collection.visibleLength) {
-        //     this.collection.select(this.collection.at(0), false, false, false);
-        // }
+        //this.ui.content.css('maxHeight', window.innerHeight); //TODO BUG
     },
 
     __executeAction(model) {
@@ -390,17 +388,6 @@ export default Marionette.View.extend({
     setLoading(state) {
         if (!this.isDestroyed()) {
             this.loading.setLoading(state);
-        }
-    },
-
-    __presortCollection(columns) {
-        const sortingColumn = columns.find(column => column.sorting);
-        if (sortingColumn) {
-            if (sortingColumn.sorting === 'asc') {
-                this.onColumnSort(sortingColumn, sortingColumn.sortAsc);
-            } else {
-                this.onColumnSort(sortingColumn, sortingColumn.sortDesc);
-            }
         }
     },
 

@@ -74,12 +74,12 @@
                 mousedown: $.proxy(this.mousedown, this)
             });
 
-        this.picker.addClass('datetimepicker-inline');
+        this.picker.classList.add('datetimepicker-inline');
 
         if (this.isRTL) {
-            this.picker.addClass('datetimepicker-rtl');
+            this.picker.classList.add('datetimepicker-rtl');
             const selector = '.prev i, .next i';
-            this.picker.find(selector).toggleClass(`${this.icons.leftArrow} ${this.icons.rightArrow}`);
+            this.picker.find(selector).classList.toggle(`${this.icons.leftArrow} ${this.icons.rightArrow}`);
         }
 
         $(document).on('mousedown touchend', this.clickedOutside);
@@ -147,7 +147,7 @@
         this.update();
         this.showMode();
 
-        this.show();
+        this.removeAttribute('displayNone');;
     };
 
     Datetimepicker.prototype = {
@@ -174,7 +174,7 @@
         },
 
         show(e) {
-            this.picker.show();
+            this.picker.removeAttribute('displayNone');;
             this.height = this.element.outerHeight();
 
             if (e) {
@@ -429,20 +429,20 @@
             const months = this.setTitle('.datetimepicker-months', year)
                 .end()
                 .find('.month')
-                .removeClass('active');
+                .classList.remove('active');
             if (currentYear === year) {
                 // getUTCMonths() returns 0 based, and we need to select the next one
                 // To cater bootstrap 2 we don't need to select the next one
-                months.eq(this.date.getUTCMonth()).addClass('active');
+                months.eq(this.date.getUTCMonth()).classList.add('active');
             }
             if (year < startYear || year > endYear) {
-                months.addClass('disabled');
+                months.classList.add('disabled');
             }
             if (year === startYear) {
-                months.slice(0, startMonth).addClass('disabled');
+                months.slice(0, startMonth).classList.add('disabled');
             }
             if (year === endYear) {
-                months.slice(endMonth).addClass('disabled');
+                months.slice(endMonth).classList.add('disabled');
             }
 
             html = '';
@@ -537,7 +537,7 @@
             let target = $(e.target).closest('span, td, th, legend');
             if (target.is(`.${this.icontype}`)) {
                 target = $(target)
-                    .parent()
+                    .parentElement
                     .closest('span, td, th, legend');
             }
             if (target.length === 1) {
@@ -618,7 +618,7 @@
                             if (target.is('.month')) {
                                 this.viewDate.setUTCDate(1);
                                 month = target
-                                    .parent()
+                                    .parentElement
                                     .find('span')
                                     .index(target);
                                 day = this.viewDate.getUTCDate();
@@ -798,7 +798,7 @@
             if (this.picker.is(':not(:visible)')) {
                 if (e.keyCode === 27) {
                     // allow escape to hide and re-show picker
-                    this.show();
+                    this.removeAttribute('displayNone');;
                     return;
                 }
                 let dateChanged = false;
@@ -928,12 +928,13 @@
 
        In jquery 1.7.2+ everything works fine.
        */
-            //this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
+            //this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).removeAttribute('displayNone');;
             this.picker
                 .find('>div')
                 .hide()
                 .filter(`.datetimepicker-${DPGlobal.modes[this.viewMode].clsName}`)
                 .css('display', 'block');
+
             this.updateNavArrows();
         },
 

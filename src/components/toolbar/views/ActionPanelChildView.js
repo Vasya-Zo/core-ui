@@ -8,7 +8,7 @@ export default ButtonView.extend({
 
     onRender() {
         if (this.model.get('type') === 'Splitter') {
-            this.$el.css({ height: '1px', pointerEvents: 'none' });
+            this.el.css({ height: '1px', pointerEvents: 'none' });
         }
     }
 });

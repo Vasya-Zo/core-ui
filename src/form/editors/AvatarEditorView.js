@@ -66,27 +66,27 @@ export default (formRepository.editors.Avatar = BaseItemEditorView.extend({
         if (this.getValue()) {
             this.__preview(this.controller.getImage(this.getValue()));
         } else if (this.getOption('fullName')) {
-            this.ui.initials.show();
+            this.ui.initials.removeAttribute('displayNone');;
         } else {
             this.__preview(this.controller.getImage());
         }
 
-        this.ui.tooltip.hide();
-        this.ui.remove.hide();
+        this.ui.tooltip.setAttribute('displayNone', true);
+        this.ui.remove.setAttribute('displayNone', true);
 
-        this.$el.hover(
+        this.el.hover(
             () => {
                 if (this.getEnabled() && !this.getReadonly()) {
-                    this.ui.tooltip.show();
+                    this.ui.tooltip.removeAttribute('displayNone');;
                 }
 
                 if (this.getEnabled() && !this.getReadonly() && this.getOption('removable') && this.ui.image.css('background-image') !== 'none') {
-                    this.ui.remove.show();
+                    this.ui.remove.removeAttribute('displayNone');;
                 }
             },
             () => {
-                this.ui.tooltip.hide();
-                this.ui.remove.hide();
+                this.ui.tooltip.setAttribute('displayNone', true);
+                this.ui.remove.setAttribute('displayNone', true);
             }
         );
     },
@@ -167,8 +167,8 @@ export default (formRepository.editors.Avatar = BaseItemEditorView.extend({
 
             URL.revokeObjectURL(this.__previewURL);
             this.ui.image.css('background-image', 'none');
-            this.ui.remove.hide();
-            this.ui.initials.show();
+            this.ui.remove.setAttribute('displayNone', true);
+            this.ui.initials.removeAttribute('displayNone');;
 
             this.__removed = true;
         }
@@ -177,7 +177,7 @@ export default (formRepository.editors.Avatar = BaseItemEditorView.extend({
     },
 
     __preview(image) {
-        this.ui.initials.hide();
+        this.ui.initials.setAttribute('displayNone', true);
         URL.revokeObjectURL(this.__previewURL);
         let previewURL;
 

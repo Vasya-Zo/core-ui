@@ -105,20 +105,20 @@ export default Marionette.View.extend({
         }
 
         if (this.getOption('canvas').dropZoneType !== 'fixed') {
-            this.ui.propertiesResizer.hide();
+            this.ui.propertiesResizer.setAttribute('displayNone', true);
         }
         this.__updateResizersPosition();
 
         if (this.getOption('canvas').focusOnShow) {
             this.canvasController.selectCanvasComponent(this.formModel.get('root'));
         } else {
-            this.ui.properties.hide();
+            this.ui.properties.setAttribute('displayNone', true);
         }
 
         if (!this.options.detachedToolbar) {
             this.showChildView('toolbarRegion', this.toolbar);
         } else {
-            this.ui.toolbar.hide();
+            this.ui.toolbar.setAttribute('displayNone', true);
         }
     },
 
@@ -140,7 +140,7 @@ export default Marionette.View.extend({
 
     __updateResizersPosition() {
         this.ui.palleteResizer.css('left', this.ui.palette.outerWidth());
-        this.ui.propertiesResizer.css('left', this.$el.width() - this.ui.properties.outerWidth());
+        this.ui.propertiesResizer.css('left', this.el.offsetWidth - this.ui.properties.offsetWidth);
     },
 
     __onPaletteResizerDrag(ui) {
@@ -151,7 +151,7 @@ export default Marionette.View.extend({
         }
 
         const otherElementsMinWidth = constants.MIN_WIDTH + this.ui.properties.outerWidth();
-        const maxWidth = this.$el.width() - otherElementsMinWidth;
+        const maxWidth = this.el.width() - otherElementsMinWidth;
         if (width > maxWidth) {
             ui.position.left = width = maxWidth;
         }
@@ -161,7 +161,7 @@ export default Marionette.View.extend({
 
     __onPropertiesResizerDrag(ui) {
         const properties = this.ui.properties;
-        const totalWidth = this.$el.width();
+        const totalWidth = this.el.width();
         let width = totalWidth - ui.position.left;
         if (width < constants.MIN_WIDTH) {
             width = constants.MIN_WIDTH;
@@ -169,7 +169,7 @@ export default Marionette.View.extend({
         }
 
         const otherElementsMinWidth = constants.MIN_WIDTH + this.ui.palette.outerWidth();
-        const maxWidth = this.$el.width() - otherElementsMinWidth;
+        const maxWidth = this.el.width() - otherElementsMinWidth;
         if (width > maxWidth) {
             width = maxWidth;
             ui.position.left = otherElementsMinWidth;
@@ -188,7 +188,7 @@ export default Marionette.View.extend({
 
         if (view) {
             const propertiesRegion = this.getRegion('propertiesRegion');
-            this.ui.properties.show();
+            this.ui.properties.removeAttribute('displayNone');;
             propertiesRegion.show(
                 new view(
                     Object.assign(this.model.toJSON(), {
@@ -252,7 +252,7 @@ export default Marionette.View.extend({
     },
 
     __togglePalette() {
-        this.$el.find('.js-palette-container').toggleClass('ld-view__list_collapsed');
+        this.el.find('.js-palette-container').classList.toggle('ld-view__list_collapsed');
     },
 
     __createToolbar(options) {

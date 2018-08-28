@@ -27,6 +27,6 @@ export default Marionette.View.extend({
     },
 
     onUnhighlighted() {
-        this.ui.name.text(this.model.get('name'));
+        this.ui.name.innerHtml = this.model.get('name');
     }
 });

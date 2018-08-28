@@ -54,7 +54,7 @@ export default Marionette.CompositeView.extend({
     },
 
     __updateHeight(height) {
-        this.$el.height(height);
+        this.el.style.height = `${height}px`;
     },
 
     __updateTop(top) {

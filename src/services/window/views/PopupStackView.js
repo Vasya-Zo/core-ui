@@ -57,7 +57,7 @@ export default Marionette.View.extend({
             }
         }
 
-        this.$el.append(regionEl);
+        this.el.append(regionEl);
         this.addRegion(popupId, {
             el: regionEl
         });
@@ -159,6 +159,6 @@ export default Marionette.View.extend({
     },
 
     __toggleFadedBackground(fade) {
-        this.ui.fadingPanel.toggleClass('fadingPanel_open', fade);
+        this.ui.fadingPanel.classList.toggle('fadingPanel_open', fade);
     }
 });

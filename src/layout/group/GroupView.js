@@ -70,7 +70,7 @@ export default Marionette.View.extend({
     },
 
     __onCollapsedChange(model, collapsed) {
-        this.ui.toggleCollapseButton.toggleClass(classes.COLLAPSED_CLASS, collapsed);
+        this.ui.toggleCollapseButton.classList.toggle(classes.COLLAPSED_CLASS, collapsed);
         if (collapsed) {
             this.getRegion('containerRegion').$el.hide(200);
         } else {

@@ -12,7 +12,7 @@ export default Marionette.View.extend({
         this.text = options.text || '';
         this.key = options.key;
         if (this.model && this.key) {
-            this.listenTo(this.model, `change:${this.key}`, (model, newValue) => this.$el.text(newValue));
+            this.listenTo(this.model, `change:${this.key}`, (model, newValue) => this.el.text(newValue));
         }
     },
 

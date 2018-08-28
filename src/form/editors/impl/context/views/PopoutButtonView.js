@@ -23,6 +23,6 @@ export default Marionette.View.extend({
     },
 
     onRender() {
-        this.$el.toggleClass(classes.EMPTY, !this.model.get('value'));
+        this.el.classList.toggle(classes.EMPTY, !this.model.get('value'));
     }
 });

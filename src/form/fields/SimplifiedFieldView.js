@@ -103,7 +103,7 @@ export default Marionette.View.extend({
             return;
         }
 
-        this.$el.addClass(classes.ERROR);
+        this.el.classList.add(classes.ERROR);
         this.errorCollection ? this.errorCollection.reset(errors) : (this.errorCollection = new Backbone.Collection(errors));
         if (!this.isErrorShown) {
             const errorPopout = dropdown.factory.createPopout({
@@ -124,7 +124,7 @@ export default Marionette.View.extend({
         if (!this.__checkUiReady()) {
             return;
         }
-        this.$el.removeClass(classes.ERROR);
+        this.el.classList.remove(classes.ERROR);
         this.errorCollection && this.errorCollection.reset();
     },
 
@@ -173,15 +173,15 @@ export default Marionette.View.extend({
         if (!this.__checkUiReady()) {
             return;
         }
-        this.$el.toggleClass(classes.REQUIRED, Boolean(required));
+        this.el.classList.toggle(classes.REQUIRED, Boolean(required));
     },
 
     __updateEditorState(readonly, enabled) {
         if (!this.__checkUiReady()) {
             return;
         }
-        this.$el.toggleClass(classes.READONLY, Boolean(readonly));
-        this.$el.toggleClass(classes.DISABLED, Boolean(readonly || !enabled));
+        this.el.classList.toggle(classes.READONLY, Boolean(readonly));
+        this.el.classList.toggle(classes.DISABLED, Boolean(readonly || !enabled));
     },
 
     __createEditor(options, fieldId, ConstructorFn) {
