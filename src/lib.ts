@@ -1,5 +1,6 @@
 /* Data & Datatime utils*/
 
+import '../typings/core-shims';
 // @ts-ignore
 import moment_ from 'moment-timezone';
 import '../node_modules/moment-timezone/moment-timezone-utils';
@@ -53,6 +54,28 @@ const api = {
     maskInput,
     createNumberMask,
     emailMask
+};
+
+// @ts-ignore
+window.Backbone.View.prototype.delegate = function(eventName: string, selector: string, listener: Function) {
+  if (!selector && this.el) {
+      this.el.addEventListener(eventName, listener);
+      return this;
+  }
+  if (this.el && selector) {
+    const el = this.el.querySelector(selector);
+    if (el) {
+      el.addEventListener(eventName, listener);
+      return this;
+    }
+  }
+  this.once('render', () => {
+    const child = this.el.querySelector(selector);
+    if (child) {
+      child.addEventListener(eventName, listener);
+    }
+  });
+  return this;
 };
 
 const moment = api.moment;

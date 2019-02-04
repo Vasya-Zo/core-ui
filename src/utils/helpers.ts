@@ -1,5 +1,7 @@
 /*eslint-disable*/
 import LocalizationService from '../services/LocalizationService';
+import InterfaceErrorMessageService from '../services/InterfaceErrorMessageService';
+import _ from 'underscore';
 
 let getPluralFormIndex = null;
 
@@ -19,9 +21,9 @@ export default /** @lends module:core.utils.helpers */ {
      * */
     comparatorFor(comparatorFn: Function, propertyName: string) {
         if (comparatorFn.length === 1) {
-            return a => comparatorFn(a.get(propertyName));
+            return (a: Backbone.Model) => comparatorFn(a.get(propertyName));
         } else if (comparatorFn.length === 2) {
-            return (a, b) => comparatorFn(a.get(propertyName), b.get(propertyName));
+            return (a: Backbone.Model, b: Backbone.Model) => comparatorFn(a.get(propertyName), b.get(propertyName));
         }
         throw new Error('Invalid arguments count in comparator function.');
     },
@@ -49,7 +51,7 @@ export default /** @lends module:core.utils.helpers */ {
      * (2 word forms for en and de, 3 word forms for ru).
      * @return {String} Resulting string.
      * */
-    getPluralForm(n, texts) {
+    getPluralForm(n: number, texts: string) {
         if (!getPluralFormIndex) {
             const formula = LocalizationService.get('CORE.SERVICES.LOCALIZATION.PLURALFORM');
             getPluralFormIndex = new Function('n', `var r = ${formula};return typeof r !== 'boolean' ? r : r === true ? 1 : 0;`); // jshint ignore:line
@@ -86,7 +88,7 @@ export default /** @lends module:core.utils.helpers */ {
      * */
     ensureOption(options: Object, optionName: string) {
         if (!options) {
-            Core.InterfaceError.logError('The options object is required.', 'MissingOptionError');
+            InterfaceErrorMessageService.logError('The options object is required.', 'MissingOptionError');
         }
         let recursiveOptions = options;
 
@@ -96,12 +98,12 @@ export default /** @lends module:core.utils.helpers */ {
                 let name = selector[i];
                 if (recursiveOptions[name] === undefined) {
                     name = _.take(selector, i + 1).join('.');
-                    Core.InterfaceError.logError(`The option \`${name}\` is required.`, 'MissingOptionError');
+                    InterfaceErrorMessageService.logError(`The option \`${name}\` is required.`, 'MissingOptionError');
                 }
                 recursiveOptions = recursiveOptions[name];
             }
         } else if (options[optionName] === undefined) {
-            Core.InterfaceError.logError({
+            InterfaceErrorMessageService.logError({
                 error: `The option \`${optionName}\` is required.`,
                 object: options
             });
@@ -162,7 +164,7 @@ export default /** @lends module:core.utils.helpers */ {
         const error = new Error(message);
         error.name = name || 'Error';
 
-        Core.InterfaceError.logError(error);
+        InterfaceErrorMessageService.logError(error);
     },
 
     throwInvalidOperationError(message?: string) {

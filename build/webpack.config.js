@@ -45,6 +45,11 @@ module.exports = options => {
                     }
                 },
                 {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/
+                },
+                {
                     test: /\.(ts)|(js)$/,
                     loader: 'babel-loader',
                     exclude: [pathResolver.node_modules()],
@@ -254,14 +259,25 @@ module.exports = options => {
             alias: {
                 'backbone.trackit': pathResolver.source('external/backbone.trackit.js'),
                 'jquery-ui': pathResolver.source('external/jquery-ui.js'),
+                stickybits: pathResolver.source('external/stickybits.js'),
                 handlebars: 'handlebars/dist/handlebars',
                 localizationMap: pathResolver.compiled('localization/localization.en.json')
             },
             extensions: ['.ts', '.js', '.json']
         },
         devServer: {
-            noInfo: true,
-            stats: 'minimal'
+            stats: {
+                colors: true,
+                chunks: false,
+                source: false,
+                hash: false,
+                modules: false,
+                errorDetails: true,
+                version: false,
+                assets: false,
+                chunkModules: false,
+                children: false
+            }
         }
     };
 

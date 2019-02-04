@@ -98,10 +98,11 @@ export default Marionette.CollectionView.extend({
         this.debouncedHandleResizeShort = _.debounce((...rest) => this.handleResize(...rest), 20);
         this.listenTo(GlobalEventService, 'window:resize', this.debouncedHandleResizeLong);
         this.listenTo(this.collection.parentCollection, 'add remove reset ', (model, collection, opt) => {
+            this.__specifyChildHeight();
             if (collection?.diff?.length) {
-                return this.debouncedHandleResizeShort(true, collection.diff[0], collection.diff[0].collection, Object.assign({}, opt, { add: true }));
+                return this.debouncedHandleResizeShort(true, collection.diff[0], collection.diff[0].collection, Object.assign({}, opt, { add: true })); //magic from prod collection
             }
-            return this.debouncedHandleResizeShort(true, model, collection, opt);
+            return this.debouncedHandleResizeShort(true, model, collection, Object.assign({}, opt, { scroll: collection.scroll })); //magic from prod collection
         });
 
         this.listenTo(this.collection, 'filter', this.__handleFilter);
@@ -116,7 +117,38 @@ export default Marionette.CollectionView.extend({
     },
 
     events: {
+        click: '__handleClick',
+        dblclick: '__handleDblClick',
+        //'click @ui.collapsibleButton': '__toggleCollapse',
+        dragover: '__handleDragOver',
+        dragenter: '__handleDragEnter',
+        dragleave: '__handleDragLeave',
+        drop: '__handleDrop',
+        mouseenter: '__handleMouseEnter',
+        mouseleave: '__handleMouseLeave',
+        contextmenu: '__handleContextMenu',
         keydown: '__handleKeydown'
+    },
+
+    modelEvents: {
+        click: '__handleModelClick',
+        dblclick: '__handleModelDblClick',
+        selected: '__handleSelection',
+        deselected: '__handleDeselection',
+        'select:pointed': '__selectPointed',
+        'selected:enter': '__handleEnter',
+        highlighted: '__handleHighlight',
+        unhighlighted: '__handleUnhighlight',
+        change: '__handleChange',
+        dragover: '__handleModelDragOver',
+        dragleave: '__handleModelDragLeave',
+        drop: '__handleModelDrop',
+        mouseenter: '__handleModelMouseEnter',
+        mouseleave: '__handleModelMouseLeave',
+        blink: '__blink',
+        'toggle:collapse': 'updateCollapsed',
+        checked: '__addCheckedClass',
+        unchecked: '__removeCheckedClass'
     },
 
     className() {
@@ -124,10 +156,35 @@ export default Marionette.CollectionView.extend({
     },
 
     onAttach() {
+        this.__specifyChildHeight();
         this.handleResize(false);
         this.listenTo(this.collection, 'update:child', model => this.__updateChildTop(this.children.findByModel(model)));
         this.parent$el = this.$el.parent();
+        this.__oldParentScrollLeft = this.el.parentElement.scrollLeft;
         this.parent$el.on('scroll', this.__onScroll.bind(this));
+    },
+
+    __specifyChildHeight() {
+        if (this.__isChildHeightSpecified || this.collection.length === 0) {
+            return;
+        }
+        const firstChild = this.el.children[0];
+        if (!firstChild) {
+            return;
+        }
+
+        let childHeight = firstChild.offsetHeight;
+        if (!childHeight) {
+            const element = document.createElement('div');
+            element.innerHTML = firstChild.outerHTML;
+            document.body.appendChild(element);
+            childHeight = element.offsetHeight;
+            document.body.removeChild(element);
+        }
+        if (childHeight > 0) {
+            this.childHeight = childHeight;
+            this.__isChildHeightSpecified = true;
+        }
     },
 
     _showEmptyView() {
@@ -188,6 +245,9 @@ export default Marionette.CollectionView.extend({
     },
 
     __handleKeydown(e) {
+        if (e.target.tagName === 'INPUT' && ![keyCode.ENTER, keyCode.ESCAPE, keyCode.TAB].includes(e.keyCode)) {
+            return;
+        }
         e.stopPropagation();
         let delta;
         // const isGrid = Boolean(this.gridEventAggregator);
@@ -235,14 +295,16 @@ export default Marionette.CollectionView.extend({
                 this.collection.trigger(e.shiftKey ? 'move:left' : 'move:right');
                 return false;
             case keyCode.ENTER:
-                if (handle) {
-                    this.collection.trigger('enter');
-                }
                 this.moveCursorBy(1, { shiftPressed: false });
+                return false;
+            case keyCode.ESCAPE:
+                if (isEditable && handle) {
+                    this.collection.trigger('keydown:escape', e);
+                }
                 return false;
             case keyCode.DELETE:
             case keyCode.BACKSPACE:
-            case keyCode.ESCAPE:
+            case keyCode.SHIFT:
                 break;
             case keyCode.HOME:
                 if (handle) {
@@ -256,7 +318,7 @@ export default Marionette.CollectionView.extend({
                 return !handle;
             default:
                 if (isEditable && handle) {
-                    this.collection.trigger('keydown', e);
+                    this.collection.trigger('keydown:default', e);
                 }
                 break;
         }
@@ -268,10 +330,10 @@ export default Marionette.CollectionView.extend({
     },
 
     // Move the cursor to a new position [cursorIndex + positionDelta] (like when user changes selected item using keyboard)
-    moveCursorBy(cursorIndexDelta, {
-        shiftPressed,
-        isLoop = false
-    }) {
+    moveCursorBy(cursorIndexDelta, { shiftPressed, isLoop = false }) {
+        if (!this.collection.length) {
+            return;
+        }
         const indexCurrentModel = this.__getIndexSelectedModel();
         const nextIndex = indexCurrentModel + cursorIndexDelta;
         this.__moveCursorTo(nextIndex, {
@@ -282,12 +344,7 @@ export default Marionette.CollectionView.extend({
         });
     },
 
-    __moveCursorTo(newCursorIndex, {
-        shiftPressed,
-        isPositiveDelta = false,
-        indexCurrentModel = this.__getIndexSelectedModel(),
-        isLoop = false
-    }) {
+    __moveCursorTo(newCursorIndex, { shiftPressed, isPositiveDelta = false, indexCurrentModel = this.__getIndexSelectedModel(), isLoop = false }) {
         let correctIndex;
         let isOverflow;
         if (isLoop) {
@@ -301,18 +358,14 @@ export default Marionette.CollectionView.extend({
         if (correctIndex !== indexCurrentModel) {
             this.__selectModelByIndex(correctIndex, shiftPressed);
             if (this.__getIsModelInScrollByIndex(correctIndex)) {
-                (isInverseScrollLogic ?
-                    !isPositiveDelta :
-                    isPositiveDelta) ?
-                        this.scrollToByLast(correctIndex) :
-                        this.scrollToByFirst(correctIndex);
+                (isInverseScrollLogic ? !isPositiveDelta : isPositiveDelta) ? this.scrollToByLast(correctIndex) : this.scrollToByFirst(correctIndex);
             }
         }
     },
 
     __getIsModelInScrollByIndex(modelIndex) {
         const modelTopOffset = modelIndex * this.childHeight;
-        const scrollTop =  this.parent$el.scrollTop();
+        const scrollTop = this.parent$el.scrollTop();
         return scrollTop > modelTopOffset || modelTopOffset > scrollTop + this.state.viewportHeight * this.childHeight;
     },
 
@@ -368,12 +421,22 @@ export default Marionette.CollectionView.extend({
     },
 
     __onScroll(e) {
-        if (this.state.viewportHeight === undefined || e.target.scrollLe || this.collection.length <= this.state.viewportHeight || this.internalScroll || this.isDestroyed()) {
+        if (this.state.viewportHeight === undefined ||
+            this.isScrollHorizontal() ||
+            this.collection.length <= this.state.viewportHeight ||
+            this.internalScroll ||
+            this.isDestroyed()) {
             return;
         }
 
         const newPosition = Math.max(0, Math.ceil(this.parent$el.scrollTop() / this.childHeight));
         this.__updatePositionInternal(newPosition, false);
+    },
+
+    isScrollHorizontal() {
+        const isHorisontal = this.__oldParentScrollLeft !== this.el.parentElement.scrollLeft;
+        this.__oldParentScrollLeft = this.el.parentElement.scrollLeft;
+        return isHorisontal;
     },
 
     updatePosition(newPosition) {
@@ -456,7 +519,7 @@ export default Marionette.CollectionView.extend({
                 const row = collection.indexOf(model);
                 this.scrollTo(row, true);
                 model.trigger('blink');
-            } else {
+            } else if (options.scroll !== false) {
                 this.scrollTo(0, true);
             }
             return;
