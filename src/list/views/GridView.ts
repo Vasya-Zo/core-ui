@@ -990,8 +990,10 @@ export default Marionette.View.extend({
             elementIndex += 1;
         }
 
-        const headerSelector = `.js-grid-header-view tr > *:nth-child(${elementIndex})`;
-        this.el.querySelector(headerSelector).classList.toggle(meta.hiddenByTreeEditorClass, isHidden);
+        if (this.options.showHeader) {
+            const headerSelector = `.js-grid-header-view tr > *:nth-child(${elementIndex})`;
+            this.el.querySelector(headerSelector).classList.toggle(meta.hiddenByTreeEditorClass, isHidden);
+        }
 
         const cellSelector = `.visible-collection tr > *:nth-child(${elementIndex})`;
         Array.from(this.el.querySelectorAll(cellSelector)).forEach(element => {
