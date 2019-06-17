@@ -313,10 +313,6 @@ export default Marionette.View.extend({
         this.searchView.toggleInputActivity(enableSearch);
     },
 
-    toggleSearchActivity(enableSearch) {
-        this.searchView.toggleInputActivity(enableSearch);
-    },
-
     onColumnSort(column, comparator) {
         this.collection.comparator = comparator;
         this.collection.sort();
@@ -424,6 +420,8 @@ export default Marionette.View.extend({
         } else {
             this.ui.tableTopMostWrapper[0].addEventListener('scroll', () => this.__onScroll(), { passive: true });
         }
+
+        this.options.columns.forEach(column => this.__toggleColumnVisibility(column.key, column.isHidden));
     },
 
     onAttach() {

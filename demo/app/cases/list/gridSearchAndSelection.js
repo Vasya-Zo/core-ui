@@ -30,7 +30,8 @@ export default function() {
         {
             key: 'numberCell',
             type: 'Integer',
-            title: 'Number Cell'
+            title: 'Number Cell',
+            isHidden: true
         },
         {
             key: 'dateTimeCell',
@@ -40,7 +41,8 @@ export default function() {
         {
             key: 'durationCell',
             type: 'Duration',
-            title: 'Duration Cell'
+            title: 'Duration Cell',
+            isHidden: true
         },
         {
             key: 'userCell',
@@ -50,12 +52,14 @@ export default function() {
         {
             key: 'booleanCell',
             type: 'Boolean',
-            title: 'Boolean Cell'
+            title: 'Boolean Cell',
+            isHidden: true
         },
         {
             key: 'referenceCell',
             type: 'Instance',
-            title: 'Reference Cell'
+            title: 'Reference Cell',
+            isHidden: true
         },
         {
             key: 'documentCell',
