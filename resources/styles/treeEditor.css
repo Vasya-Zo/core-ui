@@ -74,14 +74,16 @@
     display: none;
 }
 
+.grid-tree-editor {
+    margin-left: auto;
+}
+
 .tree-editor-no-columns-message {
     height: 100px;
     width: 100%;
 }
 
 .grid-container .tree-editor-btn {
-    display: flex;
-    justify-content: flex-end;
     margin-bottom: 5px;
 }
 
