@@ -134,7 +134,7 @@
     line-height: 1.6;
 }
 
-.expand-btn, .eye-btn {
+.tree-item .expand-btn, .tree-item .eye-btn {
     display: flex;
     align-items: center;
     justify-content: center;

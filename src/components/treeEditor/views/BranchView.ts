@@ -12,9 +12,7 @@ const iconNames = {
 export default Marionette.CollectionView.extend({
     initialize(options: { model: any, unNamedType?: string, stopNestingType?: string }) {
         this.collection = options.model.get(options.model.childrenAttribute);
-        if (this.model.collapsed == null) {
-            this.model.collapsed = true;
-        }
+        this.__initCollapsed();
     },
 
     templateContext() {
@@ -47,6 +45,12 @@ export default Marionette.CollectionView.extend({
         },
         ExpandBehavior: {
             behaviorClass: ExpandBehavior
+        }
+    },
+
+    __initCollapsed() {
+        if (this.model.collapsed == null) {
+            this.model.collapsed = true;
         }
     },
 

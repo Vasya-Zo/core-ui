@@ -15,6 +15,8 @@ export default Marionette.Behavior.extend({
 
         this.view.model.collapsed = !this.view.model.collapsed;
         this.__toggleCollapseState(animationInterval);
+
+        this.view.options.reqres.request('treeEditor:resize');
     },
 
     __toggleCollapseState(interval = animationInterval) {

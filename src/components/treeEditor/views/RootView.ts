@@ -1,5 +1,6 @@
 import BranchView from './BranchView';
 import template from '../templates/root.hbs';
+import ExpandBehavior from '../behaviors/ExpandBehavior';
 
 export default BranchView.extend({
     template: Handlebars.compile(template),
@@ -10,7 +11,11 @@ export default BranchView.extend({
         };
     },
 
-    behaviors: {},
+    behaviors: {
+        ExpandBehavior: {
+            behaviorClass: ExpandBehavior
+        }
+    },
 
     id() {
         return _.uniqueId('treeEditor-root_');
@@ -20,5 +25,11 @@ export default BranchView.extend({
 
     className: {},
 
-    __getIconClass() {}
+    __getIconClass() {},
+
+    __initCollapsed() {
+        if (this.model.collapsed == null) {
+            this.model.collapsed = false;
+        }
+    }
 });
