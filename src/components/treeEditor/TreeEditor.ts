@@ -70,7 +70,6 @@ export default class TreeEditor {
 
         if (options.showToolbar) {
             reqres.reply('command:execute', actionModel => this.__commandExecute(actionModel));
-        } else {
         }
 
         if (options.hidden) {
