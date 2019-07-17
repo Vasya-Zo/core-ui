@@ -1,5 +1,6 @@
 import TEButtonView from './views/TEButtonView';
 import NodeViewFactory from './services/NodeViewFactory';
+import TreeDiffController from './controllers/treeDiffController';
 
 const defaultOptions = {
     eyeIconClass: 'eye',
@@ -31,15 +32,17 @@ type TTreeEditorOptions = {
 
 export default class TreeEditor {
     configDiff: TConfigDiff;
-    oldConfigDiff: TConfigDiff;
+    // oldConfigDiff: TConfigDiff;
     model: any;
     constructor(options: TTreeEditorOptions) {
         _.defaults(options, defaultOptions);
         this.configDiff = options.configDiff;
-        this.oldConfigDiff = { ...options.configDiff };
+        // this.oldConfigDiff = { ...options.configDiff };
         this.model = options.model;
 
         const reqres = Backbone.Radio.channel(_.uniqueId('treeEditor'));
+
+        this.treeDiff = new TreeDiffController({ configDiff: this.configDiff, formModel: this.model, reqres });
 
         const popoutView = Core.dropdown.factory.createPopout({
             buttonView: TEButtonView,
@@ -61,7 +64,7 @@ export default class TreeEditor {
             }
         });
 
-        reqres.reply('treeEditor:setWidgetConfig', (id, config) => this.applyConfigDiff(id, config));
+        // reqres.reply('treeEditor:setWidgetConfig', (id, config) => this.applyConfigDiff(id, config));
         reqres.reply('treeEditor:collapse', () => popoutView.adjustPosition(false));
 
         popoutView.once('attach', () => popoutView.adjustPosition(false)); // TODO it doesn't work like this
@@ -79,21 +82,24 @@ export default class TreeEditor {
         return (this.popoutView = popoutView);
     }
 
-    applyConfigDiff(id: string, config: TConfigDiff) {
-        if (this.configDiff[id]) {
-            Object.assign(this.configDiff[id], config);
-        } else {
-            this.configDiff[id] = config;
-        }
-    }
+    // applyConfigDiff(id: string, config: TConfigDiff) {
+    //     if (this.configDiff[id]) {
+    //         Object.assign(this.configDiff[id], config);
+    //     } else {
+    //         this.configDiff[id] = config;
+    //     }
+    // }
 
     __onSave() {
-        this.popoutView.trigger('save', this.configDiff);
+        this.treeDiff.__applyPersonalConfig();
+        this.popoutView.trigger('save', this.treeDiff.widgetSettings);
     }
 
     __onReset() {
-        this.configDiff = {};
-        this.popoutView.trigger('reset');
+        this.treeDiff.widgetSettings = {};
+        this.treeDiff.__applyPersonalConfig();
+
+        this.popoutView.trigger('reset', this.treeDiff.widgetSettings);
     }
 
     __commandExecute(actionModel) {

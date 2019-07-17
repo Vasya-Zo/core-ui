@@ -262,6 +262,7 @@ export default function() {
 
     const view = new Core.components.TreeEditor({ model: createTreeModel(tree), getNodeName, unNamedType: 'unNamed', showToolbar: true });
     view.listenTo(view, 'save', config => console.log(config));
+    view.listenTo(view, 'reset', config => console.log(config));
 
     return view;
 }
