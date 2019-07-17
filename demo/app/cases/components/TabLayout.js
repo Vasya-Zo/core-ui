@@ -50,7 +50,7 @@ export default function() {
                         text: 'Commit',
                         type: 'Button',
                         handler() {
-                            console.log(window.temp = view);
+                            console.log((window.temp = view));
                             view.form.commit();
                             // alert(JSON.stringify(model.toJSON(), null, 4));
                         }
@@ -121,6 +121,22 @@ export default function() {
                                 ]
                             }
                         ]
+                    })
+                },
+                {
+                    id: 'tab5',
+                    name: 'Tab 5',
+                    enabled: false,
+                    view: new Core.form.editors.TextAreaEditor({
+                        value: 'Content 5'
+                    })
+                },
+                {
+                    id: 'tab6',
+                    name: 'Tab 6',
+                    enabled: false,
+                    view: new Core.form.editors.TextAreaEditor({
+                        value: 'Content 6'
                     })
                 }
             ],

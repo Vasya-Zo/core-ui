@@ -31,7 +31,7 @@ export default function() {
                         name: 'tab2'
                     },
                     {
-                        id: '3.5',
+                        id: '3.3',
                         name: 'tab3',
                         isContainer: true,
                         childrenAttribute: 'rows',
@@ -196,11 +196,11 @@ export default function() {
                 childrenAttribute: 'columns',
                 childrens: [
                     {
-                        id: '3.3',
+                        id: '3.13',
                         name: 'Pasha'
                     },
                     {
-                        id: '3.4',
+                        id: '3.14',
                         name: 'Tony'
                     }
                 ]

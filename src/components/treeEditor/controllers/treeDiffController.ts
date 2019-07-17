@@ -86,6 +86,12 @@ export default class TreeDiffController {
             formModel.findAllDescendants && typeof formModel.findAllDescendants === 'function' ? formModel.findAllDescendants() : findAllDescendants(formModel);
         this.allFMDescendants = allFMDescendantsArray.reduce((allDesc, model) => ((allDesc[model.id] = model), allDesc), {});
 
+        const keys = Object.keys(this.allFMDescendants);
+        const set = new Set(keys);
+        if (keys.length !== set.size) {
+            Core.InterfaceError.logError('Error: graph models have non-unique ids. You must to reboot your computer immediately!!!');
+        }
+
         Object.values(this.allFMDescendants).map(model => {
             const initialConfig = {};
 
@@ -127,6 +133,10 @@ export default class TreeDiffController {
             if (isDefault) {
                 // unset property if it is equal to default (for perfomance purpose)
                 delete this.widgetSettings[widgetId][key];
+                if (!Object.keys(this.widgetSettings[widgetId]).length) {
+                    delete this.widgetSettings[widgetId];
+                }
+
                 return;
             }
 
@@ -140,11 +150,8 @@ export default class TreeDiffController {
         }
     }
 
-    // apply personal config to formModel
+    // apply personal config to graphModel
     __applyPersonalConfig() {
-        // const configuredCollectionsSet = new Set();
-        // const resetedCollectionsSet = new Set();
-
         Object.entries(this.allFMDescendants).forEach(([modelId, model]) => {
             //if we come to the situation where we return to initial state, we don't want to apply any changes
             if (this.widgetSettings[modelId] && objectsDeepComparison(this.widgetSettings[modelId], model.initialConfig)) {
@@ -160,44 +167,15 @@ export default class TreeDiffController {
             personalConfigProps.filter(prop => config[prop] == null).map(prop => model.unset(prop));
 
             const collection = model.collection;
-            if (collection && config.index != null) {
-                this.configuredCollectionsSet.add(collection);
+            if (collection) {
+                // if ( config.index == null) {
+                if (collection.initialCollectionConfig.indexOf(model.id) != collection.indexOf(model)) {
+                    this.configuredCollectionsSet.add(collection);
+                }
+                // } else {
+                //     this.resetedCollectionsSet
+                // }
             }
-
-            // personalConfigProps.filter(prop => prop !== 'index' && config[prop] == null).map(prop => model.unset(prop));
-
-            // const collection = model.collection;
-            // const modelHasIndex = (m) => m.get('index') != null;
-            // const configIndex = config.index;
-            // const collectionIsModified = collection.some(m => modelHasIndex(m));
-            // const reorder = () => {
-            //                     // should reorder collection accordin to given indexes
-            //                     configuredCollectionsSet.add(collection);
-            // };
-            // const reset = () => {
-            //     resetedCollectionsSet.add(collection); // TODO optimize
-            // }
-
-            // if(collectionIsModified) {
-            //     if(configIndex == null) {
-            //         reset();
-            //     } else {
-            //         reo
-            //     }
-            // } else if(configIndex != null) {
-            //     reorder();
-            // }
-            // if (collection && config.index != null) {
-            //     if (collection.initialCollectionConfig.indexOf(model.id) !== config.index || collection.indexOf(model)) {
-            //         configuredCollectionsSet.add(collection);
-            //     } else {
-            //         const modelCollectionConfig = collection.map(m => m.id);
-
-            //         if (!collection.initialCollectionConfig.some((item, index) => item !== modelCollectionConfig[index])) {
-            //             resetedCollectionsSet.add(collection); // TODO optimize
-            //         }
-            //     }
-            // }
         });
 
         // if (this.configuredCollectionsSet.size) {
@@ -219,30 +197,64 @@ export default class TreeDiffController {
     }
 
     reorderCollectionByIndex(collection) {
-        const modelsWithPersonalIndex = collection.models.slice().filter(model => model.get('index') != null);
-        const insertIndex = collection.indexOf(modelsWithPersonalIndex[0]);
+        // const modelsWithPersonalIndex = collection.models.slice().map(model => model.get('index') == null && model.set('index' , collection.initialCollectionConfig.indexOf(model.id)));
+        // const modelsWithPersonalIndex = collection.models.slice().filter(model => model.get('index') != null);
+        // const insertIndex = collection.indexOf(modelsWithPersonalIndex[0]);
 
-        modelsWithPersonalIndex.sort((a, b) => a.get('index') - b.get('index'));
-        collection.remove(modelsWithPersonalIndex);
-        collection.add(modelsWithPersonalIndex, { at: insertIndex });
+        // modelsWithPersonalIndex.sort((a, b) => a.get('index') - b.get('index'));
+        // collection.remove(modelsWithPersonalIndex);
+        // collection.add(modelsWithPersonalIndex, { at: insertIndex });
+
+        const init = collection.initialCollectionConfig;
+        const groupsToReorder = collection
+            .map(model => model.id)
+            .reduce(
+                (groupsAccumulator, currentId, i) => {
+                    if (currentId != init[i]) {
+                        groupsAccumulator[groupsAccumulator.length - 1].push(currentId);
+                    } else {
+                        if (groupsAccumulator[groupsAccumulator.length - 1].length) {
+                            groupsAccumulator.push([]);
+                        }
+                    }
+                    return groupsAccumulator;
+                },
+                [[]]
+            )
+            .filter(group => group.length);
+
+        groupsToReorder.map(group => {
+            console.log('', collection, group); //collection.indexOf();
+            const modelsGroup = [...collection.filter(x => group.includes(x.id))];
+            const insertIndex = collection.indexOf(modelsGroup[0]);
+            modelsGroup.sort((a, b) => {
+                const aIndex = a.get('index') == null ? init.indexOf(a.id) : a.get('index');
+                const bIndex = b.get('index') == null ? init.indexOf(b.id) : b.get('index');
+
+                return aIndex - bIndex;
+            });
+
+            collection.remove(modelsGroup);
+            collection.add(modelsGroup, { at: insertIndex });
+        });
     }
 
-    static __resetCollectionOrder(collection) {
-        const collectionIds = collection.map(model => model.id);
-        const filteredСhunkIds = collectionIds.filter((id, i) => id !== collection.initialCollectionConfig[i]);
-        const insertIndex = collectionIds.indexOf(filteredСhunkIds[0]);
-        const initialСhunkIds = [...collection.initialCollectionConfig].splice(insertIndex, filteredСhunkIds.length);
+    // static __resetCollectionOrder(collection) {
+    //     const collectionIds = collection.map(model => model.id);
+    //     const filteredСhunkIds = collectionIds.filter((id, i) => id !== collection.initialCollectionConfig[i]);
+    //     const insertIndex = collectionIds.indexOf(filteredСhunkIds[0]);
+    //     const initialСhunkIds = [...collection.initialCollectionConfig].splice(insertIndex, filteredСhunkIds.length);
 
-        //TODO possible bug: can have muliple chunks
+    //     //TODO possible bug: can have muliple chunks
 
-        const chunkModels = collection.filter(model => initialСhunkIds.includes(model.id));
-        chunkModels.map(model => model.unset('index'));
+    //     const chunkModels = collection.filter(model => initialСhunkIds.includes(model.id));
+    //     chunkModels.map(model => model.unset('index'));
 
-        collection.remove(chunkModels);
-        collection.add(chunkModels, { at: insertIndex });
-        //TODO move to personalConfigController
-        // if (collection.parents[0].get('fieldType') === componentTypes.COLLECTION) {
-        //     collection.trigger('columns:move');
-        // }
-    }
+    //     collection.remove(chunkModels);
+    //     collection.add(chunkModels, { at: insertIndex });
+    //     //TODO move to personalConfigController
+    //     // if (collection.parents[0].get('fieldType') === componentTypes.COLLECTION) {
+    //     //     collection.trigger('columns:move');
+    //     // }
+    // }
 }

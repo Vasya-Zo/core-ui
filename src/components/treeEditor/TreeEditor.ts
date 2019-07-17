@@ -91,7 +91,7 @@ export default class TreeEditor {
     // }
 
     __onSave() {
-        this.treeDiff.__applyPersonalConfig();
+        // this.treeDiff.__applyPersonalConfig();
         this.popoutView.trigger('save', this.treeDiff.widgetSettings);
     }
 
