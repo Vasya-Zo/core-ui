@@ -83,6 +83,10 @@ export default class TreeEditor {
         return this.treeDiffController.configDiff;
     }
 
+    setDiffConfig(configDiff) {
+        this.treeDiffController.set(configDiff);
+    }
+
     __onSave() {
         this.view.trigger('save', this.getDiffConfig());
     }

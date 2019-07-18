@@ -45,6 +45,11 @@ export default class TreeDiffController {
         this.__applyDiff();
     }
 
+    set(configDiff) {
+        this.configDiff = configDiff;
+        this.__applyDiff();
+    }
+
     // set inital configDiff array
     __initConfiguration(configDiff) {
         this.configDiff = { ...configDiff };
