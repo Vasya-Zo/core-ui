@@ -80,7 +80,7 @@ export default class TreeEditor {
     }
 
     getDiffConfig() {
-        return this.treeDiffController.widgetSettings;
+        return this.treeDiffController.configDiff;
     }
 
     __onSave() {

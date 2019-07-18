@@ -28,8 +28,6 @@ const objectsDeepComparison = (objOne, objTwo) => {
 };
 
 export default class TreeDiffController {
-    widgetSettings: {};
-
     constructor(options) {
         const { configDiff, graphModel, reqres } = options;
 
@@ -43,13 +41,13 @@ export default class TreeDiffController {
     }
 
     reset() {
-        this.widgetSettings = {};
+        this.configDiff = {};
         this.__applyDiff();
     }
 
-    // set inital widgetSettings array
+    // set inital configDiff array
     __initConfiguration(configDiff) {
-        this.widgetSettings = { ...configDiff };
+        this.configDiff = { ...configDiff };
     }
 
     __initDescendants(options) {
@@ -88,7 +86,7 @@ export default class TreeDiffController {
         collectionsSet.forEach(coll => (coll.initialCollectionConfig = coll.map(m => m.id)));
     }
 
-    // set given widget's diff config to widgetSettings array
+    // set given widget's diff config to configDiff array
     __setWidgetConfig(widgetId, keyValue) {
         const [key, value] = Object.entries(keyValue)[0];
         const initialValue = this.graphDescendants[widgetId].initialConfig[key];
@@ -101,24 +99,24 @@ export default class TreeDiffController {
             return !value || value === initialValue; // here "!value" means: isHidden===false or width===0
         })();
 
-        if (this.widgetSettings[widgetId]) {
+        if (this.configDiff[widgetId]) {
             if (isDefault) {
                 // unset property if it is equal to default (for perfomance purpose)
-                delete this.widgetSettings[widgetId][key];
-                if (!Object.keys(this.widgetSettings[widgetId]).length) {
-                    delete this.widgetSettings[widgetId];
+                delete this.configDiff[widgetId][key];
+                if (!Object.keys(this.configDiff[widgetId]).length) {
+                    delete this.configDiff[widgetId];
                 }
 
                 return;
             }
 
-            Object.assign(this.widgetSettings[widgetId], keyValue);
+            Object.assign(this.configDiff[widgetId], keyValue);
 
             return;
         }
 
         if (!isDefault) {
-            this.widgetSettings[widgetId] = keyValue;
+            this.configDiff[widgetId] = keyValue;
         }
     }
 
@@ -126,11 +124,11 @@ export default class TreeDiffController {
     __applyDiff() {
         Object.entries(this.graphDescendants).forEach(([modelId, model]) => {
             //if we come to the situation where we return to initial state, we don't want to apply any changes
-            if (this.widgetSettings[modelId] && objectsDeepComparison(this.widgetSettings[modelId], model.initialConfig)) {
-                delete this.widgetSettings[modelId];
+            if (this.configDiff[modelId] && objectsDeepComparison(this.configDiff[modelId], model.initialConfig)) {
+                delete this.configDiff[modelId];
             }
 
-            const config = this.widgetSettings[modelId] || model.initialConfig;
+            const config = this.configDiff[modelId] || model.initialConfig;
 
             if (Object.keys(config).length) {
                 model.set(config);
