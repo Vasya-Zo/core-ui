@@ -1,6 +1,6 @@
 import TEButtonView from './views/TEButtonView';
 import NodeViewFactory from './services/NodeViewFactory';
-import TreeDiffController from './controllers/treeDiffController';
+import TreeDiffController from './controllers/TreeDiffController';
 
 const defaultOptions = {
     eyeIconClass: 'eye',
