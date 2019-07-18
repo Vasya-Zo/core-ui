@@ -13,7 +13,7 @@ import '../resources/styles/codemirror.css';
 import '../resources/styles/pastel-on-dark.css';
 import '../resources/styles/notifications.css';
 import '../resources/styles/blink-checkbox.css';
-import '../resources/styles/treeEditor.css';
+
 import '../resources/styles/icon-editor.css';
 import '../node_modules/spectrum-colorpicker/spectrum.css';
 
@@ -56,7 +56,8 @@ import NavigationDrawer from './components/navigationDrawer/NavigationDrawer';
 import BreadCrumbs from './components/breadCrumbs/BreadCrumbs';
 import Toolbar from './components/toolbar/ToolbarView';
 import VideoChat from './components/videoChat/VideoChat';
-import TreeEditor from './components/treeEditor';
+
+import treeEditorApi from './components/treeEditor';
 
 /**
  * Core UI components: основные компоненты для построение веб-интерфейса Comindware.
@@ -132,6 +133,8 @@ const core = {
     dropdown: dropdownApi,
 
     layout: layoutApi,
+
+    treeEditor: treeEditorApi,
     /**
      * A large set of editors and related classes built on top of [Backbone.Form](https://github.com/powmedia/backbone-forms) library.
      * @namespace
@@ -160,8 +163,7 @@ const core = {
         NavigationDrawer,
         Toolbar,
         BreadCrumbs,
-        VideoChat,
-        TreeEditor
+        VideoChat
     }
 };
 

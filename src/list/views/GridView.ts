@@ -885,7 +885,7 @@ export default Marionette.View.extend({
         this.treeModel.id = _.uniqueId('treeModelRoot');
         this.treeModel.isContainer = !!this.options.columns.length;
         this.treeModel.childrenAttribute = 'columnsCollection';
-        this.treeEditorView = new Core.components.TreeEditor({
+        this.treeEditorView = new Core.treeEditor.view({
             hidden: this.options.treeEditorIsHidden,
             model: this.treeModel,
             getNodeName(model) {

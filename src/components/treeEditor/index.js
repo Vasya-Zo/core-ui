@@ -1,6 +1,8 @@
+import '../../../resources/styles/treeEditor.css';
 import TreeEditor from './TreeEditor';
 import TreeDiffController from './controllers/TreeDiffController';
 
-export const DiffController = TreeDiffController;
-
-export default TreeEditor;
+export default {
+    view: TreeEditor,
+    controller: TreeDiffController
+};
