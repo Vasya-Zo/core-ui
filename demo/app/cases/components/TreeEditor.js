@@ -261,6 +261,7 @@ export default function() {
     };
 
     const view = new Core.treeEditor.view({ model: createTreeModel(tree), getNodeName, unNamedType: 'unNamed', showToolbar: true });
+    console.log(view.getDiffConfig());
     view.listenTo(view, 'save', config => console.log(config));
     view.listenTo(view, 'reset', () => console.log('reseted'));
 

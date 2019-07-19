@@ -5,6 +5,17 @@ import { getIconAndPrefixerClasses, setModelHiddenAttribute } from '../meta';
 import LocalizationService from '../../../services/LocalizationService';
 
 export default BranchView.extend({
+    initialize(options) {
+        BranchView.prototype.initialize.call(this, options);
+        this.listenTo(this.collection, 'change:isHidden', () => {
+            if (this.collection.settingAllState) {
+                return;
+            }
+
+            this.__toggleHideAll(this.__getHiddenPrevalence());
+        });
+    },
+
     template: Handlebars.compile(template),
 
     templateContext() {
@@ -18,7 +29,10 @@ export default BranchView.extend({
         return this.__hasContainerChilds()
             ? {
                   CollapsibleBehavior: {
-                      behaviorClass: CollapsibleBehavior
+                      behaviorClass: CollapsibleBehavior,
+                      options: {
+                          zdarova: 'zdarova'
+                      }
                   }
               }
             : {};
@@ -45,27 +59,42 @@ export default BranchView.extend({
     },
 
     onRender() {
-        this.__handleHideAll(!!this.model.areChildsHidden);
+        this.__toggleHideAll(this.__getHiddenPrevalence());
     },
 
-    __onEyeBtnClick() {
-        const areChildsHidden = (this.model.areChildsHidden = !this.model.areChildsHidden);
+    __getHiddenPrevalence() {
+        const slicedRequiredModels = this.collection.filter(model => !model.get('required'));
+        const isHiddenPrevalence = slicedRequiredModels.filter(model => model.get('isHidden')).length > slicedRequiredModels.length / 2;
 
-        this.__handleHideAll(areChildsHidden);
+        return (this.model.allChildsHidden = isHiddenPrevalence);
     },
 
-    __handleHideAll(areChildsHidden) {
+    __onEyeBtnClick(event: MouseEvent) {
+        event.stopPropagation();
+        const allChildsHidden = !this.model.allChildsHidden;
+
+        this.__settHiiddenToChildsModels(allChildsHidden);
+        this.__toggleHideAll(allChildsHidden);
+    },
+
+    __toggleHideAll(allChildsHidden: boolean) {
         const uiEyeElement = this.ui.eyeBtn[0];
 
         if (uiEyeElement) {
-            uiEyeElement.classList.remove(...getIconAndPrefixerClasses(this.__getIconClass(!areChildsHidden)));
-            uiEyeElement.classList.add(...getIconAndPrefixerClasses(this.__getIconClass(areChildsHidden)));
+            uiEyeElement.classList.remove(...getIconAndPrefixerClasses(this.__getIconClass(allChildsHidden)));
+            uiEyeElement.classList.add(...getIconAndPrefixerClasses(this.__getIconClass(!allChildsHidden)));
         }
 
-        this.collection.forEach(model => setModelHiddenAttribute(model, areChildsHidden));
-        this.el.querySelector('.js-root-header-name').innerText = areChildsHidden
+        this.el.querySelector('.js-root-header-name').innerText = allChildsHidden
             ? LocalizationService.get('CORE.TOOLBAR.BLINKCHECKBOX.SHOWALL')
             : LocalizationService.get('CORE.TOOLBAR.BLINKCHECKBOX.HIDEALL');
+    },
+
+    __settHiiddenToChildsModels(hidden) {
+        this.model.allChildsHidden = hidden;
+        this.collection.settingAllState = true;
+        this.collection.forEach(model => setModelHiddenAttribute(model, hidden));
+        delete this.collection.settingAllState;
     },
 
     __hasContainerChilds() {

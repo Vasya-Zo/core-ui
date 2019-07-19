@@ -52,7 +52,7 @@ export default class TreeDiffController {
 
     // set inital configDiff array
     __initConfiguration(configDiff) {
-        this.configDiff = { ...configDiff };
+        this.configDiff = configDiff; //{ ...configDiff };
     }
 
     __initDescendants(options) {
@@ -75,6 +75,10 @@ export default class TreeDiffController {
             personalConfigProps.map(prop => {
                 const propValue = model.get(prop);
                 if (propValue != null) {
+                    if (prop !== 'index' && !propValue) {
+                        return;
+                    }
+
                     initialConfig[prop] = propValue;
 
                     return;
@@ -156,6 +160,8 @@ export default class TreeDiffController {
                 this.configuredCollectionsSet.delete(coll);
             }
         });
+
+        // this.options.configDiff = this.configDiff;
     }
 
     __reorderCollectionByIndex(collection) {

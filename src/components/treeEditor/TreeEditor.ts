@@ -40,7 +40,7 @@ export default class TreeEditor {
 
         const reqres = Backbone.Radio.channel(_.uniqueId('treeEditor'));
 
-        this.treeDiffController = new TreeDiffController({ configDiff: this.configDiff, graphModel: this.model, reqres });
+        this.controller = new TreeDiffController({ configDiff: this.configDiff, graphModel: this.model, reqres });
 
         const popoutView = Core.dropdown.factory.createPopout({
             buttonView: TEButtonView,
@@ -76,15 +76,18 @@ export default class TreeEditor {
             popoutView.el.setAttribute('hidden', true);
         }
 
+        popoutView.getDiffConfig = this.getDiffConfig.bind(this);
+        popoutView.setDiffConfig = this.setDiffConfig.bind(this);
+
         return (this.view = popoutView);
     }
 
     getDiffConfig() {
-        return this.treeDiffController.configDiff;
+        return this.controller.configDiff;
     }
 
     setDiffConfig(configDiff) {
-        this.treeDiffController.set(configDiff);
+        this.controller.set(configDiff);
     }
 
     __onSave() {
@@ -92,7 +95,7 @@ export default class TreeEditor {
     }
 
     __onReset() {
-        this.treeDiffController.reset();
+        this.controller.reset();
         this.view.trigger('reset');
     }
 
