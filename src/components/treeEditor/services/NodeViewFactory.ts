@@ -6,7 +6,7 @@ import EmptyView from '../views/EmptyView';
 import UnNamedBranchView from '../views/UnNamedBranchView';
 
 export default {
-    getRootView(config: { model: any, unNamedType?: string, stopNestingType?: string, forceBranchType?: string, showToolbar?: boolean }) {
+    getRootView(config: { model: any, unNamedType?: string, stopNestingType?: string, forceBranchType?: string, showToolbar?: boolean, childsFilter?: any }) {
         if (config.showToolbar) {
             return RootViewWithToolbar;
         }
@@ -14,7 +14,7 @@ export default {
         return RootView;
     },
 
-    getNodeView(config: { model: any, unNamedType?: string, stopNestingType?: string, forceBranchType?: string }) {
+    getNodeView(config: { model: any, unNamedType?: string, stopNestingType?: string, forceBranchType?: string, childsFilter?: any }) {
         const { model, unNamedType, stopNestingType, forceBranchType } = config;
         const isForcedBranch = forceBranchType && model.get('type') === forceBranchType;
         const nestingAllowed = !stopNestingType || model.getParent()?.get('type') !== stopNestingType;

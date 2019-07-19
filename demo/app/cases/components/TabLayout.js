@@ -129,7 +129,8 @@ export default function() {
                     enabled: false,
                     view: new Core.form.editors.TextAreaEditor({
                         value: 'Content 5'
-                    })
+                    }),
+                    visible: false
                 },
                 {
                     id: 'tab6',
@@ -137,7 +138,8 @@ export default function() {
                     enabled: false,
                     view: new Core.form.editors.TextAreaEditor({
                         value: 'Content 6'
-                    })
+                    }),
+                    visible: false
                 }
             ],
             showStepper: true,
