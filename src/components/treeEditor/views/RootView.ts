@@ -13,6 +13,8 @@ export default BranchView.extend({
             }
 
             this.__toggleHideAll(this.__getHiddenPrevalence());
+
+            // TODO refactor: do the same thing for CollapsibleBehavior, then join them into one core behavior
         });
     },
 
