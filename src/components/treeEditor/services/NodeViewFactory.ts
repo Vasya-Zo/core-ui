@@ -15,7 +15,7 @@ export default {
     },
 
     getNodeView(config: { model: any, unNamedType?: string, stopNestingType?: string, forceBranchType?: string, childsFilter?: any }) {
-        const { model, unNamedType, stopNestingType, forceBranchType } = config;
+        const { model, unNamedType, stopNestingType, forceBranchType, childsFilter } = config;
         const isForcedBranch = forceBranchType && model.get('type') === forceBranchType;
         const nestingAllowed = !stopNestingType || model.getParent()?.get('type') !== stopNestingType;
         const isBranchView = isForcedBranch || nestingAllowed;

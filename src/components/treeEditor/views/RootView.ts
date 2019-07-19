@@ -7,8 +7,15 @@ import LocalizationService from '../../../services/LocalizationService';
 export default BranchView.extend({
     initialize(options) {
         BranchView.prototype.initialize.call(this, options);
-        this.listenTo(this.collection, 'change:isHidden', () => {
-            if (this.collection.settingAllState) {
+
+        let filteredModels = this.collection.filter(model => !model.get('required'));
+        if (options.childsFilter) {
+            filteredModels = filteredModels.filter(model => options.childsFilter.call({}, { model }));
+        }
+
+        const filteredCollection = (this.filteredCollection = new Backbone.Collection(filteredModels));
+        this.listenTo(filteredCollection, 'change:isHidden', () => {
+            if (filteredCollection.settingAllState) {
                 return;
             }
 
@@ -65,7 +72,7 @@ export default BranchView.extend({
     },
 
     __getHiddenPrevalence() {
-        const slicedRequiredModels = this.collection.filter(model => !model.get('required'));
+        const slicedRequiredModels = this.filteredCollection; //.filter(model => !model.get('required'));
         const isHiddenPrevalence = slicedRequiredModels.filter(model => model.get('isHidden')).length > slicedRequiredModels.length / 2;
 
         return (this.model.allChildsHidden = isHiddenPrevalence);
@@ -94,9 +101,9 @@ export default BranchView.extend({
 
     __settHiiddenToChildsModels(hidden) {
         this.model.allChildsHidden = hidden;
-        this.collection.settingAllState = true;
-        this.collection.forEach(model => setModelHiddenAttribute(model, hidden));
-        delete this.collection.settingAllState;
+        this.filteredCollection.settingAllState = true;
+        this.filteredCollection.forEach(model => setModelHiddenAttribute(model, hidden));
+        delete this.filteredCollection.settingAllState;
     },
 
     __hasContainerChilds() {
