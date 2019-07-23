@@ -270,7 +270,8 @@ export default function() {
         getNodeName,
         unNamedType: 'unNamed',
         showToolbar: true,
-        childsFilter: child => child.model.get('visible') !== false
+        childsFilter: child => child.model.get('visible') !== false,
+        configDiff: {"2.q":{"index":0},"2.2":{"index":1},"2.hh":{"index":2},"2.1":{"index":3},"3.2":{"index":0},"3.1":{"index":1}}
     });
     console.log(view.getDiffConfig());
     view.listenTo(view, 'save', config => console.log(config));

@@ -32,12 +32,11 @@ export default class TreeDiffController {
         const { configDiff, graphModel, reqres } = options;
 
         this.configuredCollectionsSet = new Set();
-        this.__initConfiguration(configDiff);
+
         this.__initDescendants({ graphModel, reqres });
+        this.__initConfiguration(configDiff);
 
         reqres.reply('treeEditor:setWidgetConfig', (widgetId: string, config: {}) => this.__setWidgetConfig(widgetId, config));
-
-        this.__applyDiff();
     }
 
     reset() {
@@ -50,9 +49,8 @@ export default class TreeDiffController {
         this.__applyDiff();
     }
 
-    // set inital configDiff array
     __initConfiguration(configDiff) {
-        this.configDiff = configDiff; //{ ...configDiff };
+        this.set(configDiff);
     }
 
     __initDescendants(options) {
@@ -147,28 +145,33 @@ export default class TreeDiffController {
 
             const collection = model.collection;
             if (collection) {
-                if (collection.initialCollectionConfig.indexOf(model.id) != collection.indexOf(model)) {
+                const configIndex = config.index == null ? collection.initialCollectionConfig.indexOf(model.id) : config.index;
+                if (configIndex != collection.indexOf(model)) {
                     this.configuredCollectionsSet.add(collection);
                 }
             }
         });
 
         this.configuredCollectionsSet.forEach(coll => {
-            this.__reorderCollectionByIndex(coll);
+            const collectionConfig = Object.entries(this.configDiff)
+                .filter(([key, value]) => this.graphDescendants[key].collection === coll)
+                .map(([key, value]) => ({
+                    [key]: value.index == null ? coll.initialCollectionConfig.indexOf(key) : value.index
+                }));
+
+            this.__reorderCollectionByIndex(coll, collectionConfig);
             if (coll.initialCollectionConfig.every((id, i) => coll.at(i).id === id)) {
                 // returned to the inital state
                 this.configuredCollectionsSet.delete(coll);
             }
         });
-
-        // this.options.configDiff = this.configDiff;
     }
 
-    __reorderCollectionByIndex(collection) {
-        const init = collection.initialCollectionConfig;
+    __reorderCollectionByIndex(collection, collectionConfig) {
+        const init = collection.map(model => model.id);
         // obvious code don't need to be commented
-        const groupsToReorder = collection
-            .map(model => model.id)
+        const groupsToReorder = collectionConfig
+            .map(item => Object.keys(item)[0])
             .reduce(
                 (groupsAccumulator, currentId, i) => {
                     if (currentId != init[i]) {
@@ -184,7 +187,7 @@ export default class TreeDiffController {
             )
             .filter(group => group.length);
 
-        const getIndex = model => (model.get('index') == null ? init.indexOf(model.id) : model.get('index'));
+        const getIndex = model => collectionConfig.indexOf(model.id); // (model.get('index') == null ? init.indexOf(model.id) : model.get('index'));
 
         groupsToReorder.map(group => {
             const modelsGroup = [...collection.filter(model => group.includes(model.id))];

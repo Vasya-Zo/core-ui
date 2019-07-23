@@ -78,6 +78,7 @@ export default class TreeEditor {
 
         popoutView.getDiffConfig = this.getDiffConfig.bind(this);
         popoutView.setDiffConfig = this.setDiffConfig.bind(this);
+        popoutView.resetDiffConfig = this.resetDiffConfig.bind(this);
 
         return (this.view = popoutView);
     }
@@ -90,12 +91,16 @@ export default class TreeEditor {
         this.controller.set(configDiff);
     }
 
+    resetDiffConfig() {
+        this.controller.reset();
+    }
+
     __onSave() {
         this.view.trigger('save', this.getDiffConfig());
     }
 
     __onReset() {
-        this.controller.reset();
+        this.resetDiffConfig();
         this.view.trigger('reset');
     }
 
