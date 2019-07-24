@@ -76,31 +76,31 @@ export default class TreeEditor {
             popoutView.el.setAttribute('hidden', true);
         }
 
-        popoutView.getDiffConfig = this.getDiffConfig.bind(this);
-        popoutView.setDiffConfig = this.setDiffConfig.bind(this);
-        popoutView.resetDiffConfig = this.resetDiffConfig.bind(this);
+        popoutView.getDiffConfig = this.__getDiffConfig.bind(this);
+        popoutView.setDiffConfig = this.__setDiffConfig.bind(this);
+        popoutView.resetDiffConfig = this.__resetDiffConfig.bind(this);
 
         return (this.view = popoutView);
     }
 
-    getDiffConfig() {
+    __getDiffConfig() {
         return this.controller.configDiff;
     }
 
-    setDiffConfig(configDiff) {
+    __setDiffConfig(configDiff) {
         this.controller.set(configDiff);
     }
 
-    resetDiffConfig() {
+    __resetDiffConfig() {
         this.controller.reset();
     }
 
     __onSave() {
-        this.view.trigger('save', this.getDiffConfig());
+        this.view.trigger('save', this.__getDiffConfig());
     }
 
     __onReset() {
-        this.resetDiffConfig();
+        this.__resetDiffConfig();
         this.view.trigger('reset');
     }
 

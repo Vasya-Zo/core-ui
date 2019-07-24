@@ -193,7 +193,7 @@ export default class TreeDiffController {
             collection.remove(modelsGroup);
             collection.add(modelsGroup, { at: insertIndex });
             // if (collection.parents[0].get('fieldType') === componentTypes.COLLECTION) {
-            //     collection.trigger('columns:move');
+            collection.trigger('columns:move');
             // }
         });
     }
