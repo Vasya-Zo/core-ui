@@ -153,28 +153,23 @@ export default class TreeDiffController {
         });
 
         this.configuredCollectionsSet.forEach(coll => {
-            const collectionConfig = Object.entries(this.configDiff)
-                .filter(([key, value]) => this.graphDescendants[key].collection === coll)
-                .map(([key, value]) => ({
-                    [key]: value.index == null ? coll.initialCollectionConfig.indexOf(key) : value.index
-                }));
-
-            this.__reorderCollectionByIndex(coll, collectionConfig);
+            this.__reorderCollectionByIndex(coll);
             if (coll.initialCollectionConfig.every((id, i) => coll.at(i).id === id)) {
-                // returned to the inital state
+                // that means collection returned to the inital state
                 this.configuredCollectionsSet.delete(coll);
             }
         });
     }
 
-    __reorderCollectionByIndex(collection, collectionConfig) {
-        const init = collection.map(model => model.id);
-        // obvious code don't need to be commented
+    __reorderCollectionByIndex(collection) {
+        const collIndexes = collection.map(model => model.id);
+        const getModelsIndex = id => (this.configDiff[id]?.index != null ? this.configDiff[id].index : collection.initialCollectionConfig.indexOf(id));
+        const collectionConfig = collection.map(model => model.id).sort((a, b) => getModelsIndex(a) - getModelsIndex(b));
         const groupsToReorder = collectionConfig
-            .map(item => Object.keys(item)[0])
+            // beautiful, clean and self-explanatory code don't need to be commented
             .reduce(
                 (groupsAccumulator, currentId, i) => {
-                    if (currentId != init[i]) {
+                    if (currentId != collIndexes[i]) {
                         groupsAccumulator[groupsAccumulator.length - 1].push(currentId);
                     } else {
                         if (groupsAccumulator[groupsAccumulator.length - 1].length) {
@@ -187,13 +182,13 @@ export default class TreeDiffController {
             )
             .filter(group => group.length);
 
-        const getIndex = model => collectionConfig.indexOf(model.id); // (model.get('index') == null ? init.indexOf(model.id) : model.get('index'));
+        const getConfigIndex = model => collectionConfig.indexOf(model.id);
 
         groupsToReorder.map(group => {
             const modelsGroup = [...collection.filter(model => group.includes(model.id))];
             const insertIndex = collection.indexOf(modelsGroup[0]);
 
-            modelsGroup.sort((a, b) => getIndex(a) - getIndex(b));
+            modelsGroup.sort((a, b) => getConfigIndex(a) - getConfigIndex(b));
 
             collection.remove(modelsGroup);
             collection.add(modelsGroup, { at: insertIndex });
