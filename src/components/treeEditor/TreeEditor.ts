@@ -65,9 +65,7 @@ export default class TreeEditor {
         reqres.reply('treeEditor:collapse', () => popoutView.adjustPosition(false));
 
         popoutView.once('attach', () => popoutView.adjustPosition(false)); // TODO it doesn't work like this
-
         popoutView.listenTo(popoutView, 'close', () => this.__onSave());
-
         if (options.showToolbar) {
             reqres.reply('command:execute', actionModel => this.__commandExecute(actionModel));
         }
@@ -79,6 +77,7 @@ export default class TreeEditor {
         popoutView.getDiffConfig = this.__getDiffConfig.bind(this);
         popoutView.setDiffConfig = this.__setDiffConfig.bind(this);
         popoutView.resetDiffConfig = this.__resetDiffConfig.bind(this);
+        popoutView.reorderCollectionByIndex = TreeDiffController.prototype.__reorderCollectionByIndex; // Or should we export controller with coreApi?
 
         return (this.view = popoutView);
     }
@@ -104,7 +103,7 @@ export default class TreeEditor {
         this.view.trigger('reset');
     }
 
-    __commandExecute(actionModel) {
+    __commandExecute(actionModel: { id: string }) {
         switch (actionModel.id) {
             case 'reset':
                 this.__onReset();
