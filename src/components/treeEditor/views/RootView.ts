@@ -72,7 +72,7 @@ export default BranchView.extend({
     },
 
     __getHiddenPrevalence() {
-        const slicedRequiredModels = this.filteredCollection; //.filter(model => !model.get('required'));
+        const slicedRequiredModels = this.filteredCollection;
         const isHiddenPrevalence = slicedRequiredModels.filter(model => model.get('isHidden')).length > slicedRequiredModels.length / 2;
 
         return (this.model.allChildsHidden = isHiddenPrevalence);

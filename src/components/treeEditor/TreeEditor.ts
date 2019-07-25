@@ -26,6 +26,7 @@ type TTreeEditorOptions = {
     unNamedType?: string,
     stopNestingType?: string,
     forceBranchType?: string,
+    forceLeafType?: string | string[],
     getNodeName?: (model: any) => string,
     showToolbar?: boolean
 };
@@ -53,6 +54,7 @@ export default class TreeEditor {
                 unNamedType: options.unNamedType,
                 stopNestingType: options.stopNestingType,
                 forceBranchType: options.forceBranchType,
+                forceLeafType: options.forceLeafType,
                 showToolbar: options.showToolbar
             }),
             panelViewOptions: {

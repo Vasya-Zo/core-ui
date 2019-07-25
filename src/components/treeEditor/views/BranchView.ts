@@ -33,6 +33,7 @@ export default Marionette.CollectionView.extend({
             unNamedType: this.options.unNamedType,
             stopNestingType: this.options.stopNestingType,
             forceBranchType: this.options.forceBranchType,
+            forceLeafType: this.options.forceLeafType,
             childsFilter: this.options.childsFilter
         });
     },
