@@ -920,6 +920,10 @@ export default Marionette.View.extend({
         this.listenTo(this.treeEditorView, 'save', config => this.trigger('treeEditor:save', config));
     },
 
+    resetDiffConfig(config) {
+        this.treeEditorView.resetDiffConfig(config);
+    },
+
     __reorderColumns(config: string[]) {
         this.options.columns.sort((a, b) => config.indexOf(a.key) - config.indexOf(b.key)); // TODO a, b type: Column
     },
