@@ -900,7 +900,7 @@ export default Marionette.View.extend({
         this.treeModel.isContainer = !!this.options.columns.length;
         this.treeModel.childrenAttribute = 'columnsCollection';
 
-        this.treeEditorView = new Core.treeEditor.view({
+        this.treeEditorView = new Core.components.TreeEditor({
             hidden: this.options.treeEditorIsHidden,
             model: this.treeModel,
             configDiff: this.options.treeEditorConfig,
@@ -920,8 +920,8 @@ export default Marionette.View.extend({
         this.listenTo(this.treeEditorView, 'save', config => this.trigger('treeEditor:save', config));
     },
 
-    resetDiffConfig(config) {
-        this.treeEditorView.resetDiffConfig(config);
+    resetDiffConfig() {
+        this.treeEditorView.resetDiffConfig();
     },
 
     __reorderColumns(config: string[]) {

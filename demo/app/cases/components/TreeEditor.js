@@ -265,7 +265,7 @@ export default function() {
         return model.get('name');
     };
 
-    const view = new Core.treeEditor.view({
+    const view = new Core.components.TreeEditor({
         model: createTreeModel(tree),
         getNodeName,
         unNamedType: 'unNamed',

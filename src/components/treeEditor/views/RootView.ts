@@ -38,10 +38,7 @@ export default BranchView.extend({
         return this.__hasContainerChilds()
             ? {
                   CollapsibleBehavior: {
-                      behaviorClass: CollapsibleBehavior,
-                      options: {
-                          zdarova: 'zdarova'
-                      }
+                      behaviorClass: CollapsibleBehavior
                   }
               }
             : {};

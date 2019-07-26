@@ -364,6 +364,6 @@ export default Marionette.View.extend({
             treeEditorOptions.childsFilter = childsFilter;
         }
 
-        this.treeEditorView = new Core.treeEditor.view(treeEditorOptions);
+        this.treeEditorView = new Core.components.TreeEditor(treeEditorOptions);
     }
 });
