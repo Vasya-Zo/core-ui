@@ -3,6 +3,5 @@ node_modules/
 .idea/
 localization/.backup/
 reports/
-dist/
 !dist/localization/
 demo/assets/
